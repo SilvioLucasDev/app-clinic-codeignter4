@@ -10,6 +10,9 @@
                     <a class="nav-link <?= uri_string() == '' ? 'active' : '' ?>" aria-current="page" href="<?= url_to('home.index') ?>">Home</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link <?= uri_string() == 'patient' ? 'active' : '' ?>" href="<?= url_to('patient.index') ?>">Pacientes</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="<?= url_to('logout') ?>">Sair</a>
                 </li>
             </ul>

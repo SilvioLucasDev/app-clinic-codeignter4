@@ -7,4 +7,6 @@ use CodeIgniter\Router\RouteCollection;
  */
 $routes->get('/', 'HomeController::index', ['as' => 'home.index']);
 
+$routes->get('/patient', 'PatientController::index', ['as' => 'patient.index']);
+
 service('auth')->routes($routes);
