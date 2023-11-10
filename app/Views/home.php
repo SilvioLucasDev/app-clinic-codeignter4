@@ -1,20 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
+<?= $this->extend('partials/app') ?>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home Shield</title>
-</head>
+<?= $this->section('page_title') ?> Home <?= $this->endSection() ?>
 
-<body>
-    <?php if (auth()->loggedIn()) : ?>
-        Olá, <?= auth()->user()->username ?>. Você está logado!
+<?= $this->section('content') ?>
 
-        <a href="<?= url_to('logout') ?>">Logout</a>
-    <?php else : ?>
-        Você não está logado!
-    <?php endif ?>
-</body>
+<div class="row justify-content-md-center text-center">
+    <div class="col-md-auto">
+        <div class="card">
+            <div class="card-body">
+                <?php if (auth()->loggedIn()) : ?>
+                    Olá, <?= auth()->user()->username ?>. Você está logado!
 
-</html>
+                    <a href="<?= url_to('logout') ?>">Sair</a>
+                <?php endif ?>
+            </div>
+        </div>
+    </div>
+</div>
+
+<?= $this->endSection() ?>
