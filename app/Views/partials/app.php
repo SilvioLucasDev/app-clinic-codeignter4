@@ -14,7 +14,7 @@
     <main class="container">
         <?= $this->include('partials/navbar') ?>
 
-        <div class="mt-4">
+        <div class="mt-4 mx-4">
             <?= $this->renderSection('content') ?>
         </div>
     </main>
