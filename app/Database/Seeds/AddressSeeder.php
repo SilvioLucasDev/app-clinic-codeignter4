@@ -11,9 +11,11 @@ class AddressSeeder extends Seeder
     {
         $faker = Factory::create('pt_BR');
 
-        for ($i = 1; $i <= 20; $i++) {
+        $numberOfLines = 50;
+
+        for ($i = 1; $i <= $numberOfLines; $i++) {
             $data = [
-                'patient_id' => $faker->unique()->numberBetween(1, 20),
+                'patient_id' => $faker->unique()->numberBetween(1, $numberOfLines),
                 'zipcode' => str_replace('-', '', $faker->postcode()),
                 'street' => $faker->streetName(),
                 'number' => $faker->buildingNumber(),

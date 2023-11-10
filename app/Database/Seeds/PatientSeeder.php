@@ -11,7 +11,9 @@ class PatientSeeder extends Seeder
     {
         $faker = Factory::create('pt_BR');
 
-        for ($i = 1; $i <= 20; $i++) {
+        $numberOfLines = 50;
+
+        for ($i = 1; $i <= $numberOfLines; $i++) {
             $data = [
                 'name' => $faker->name(),
                 'mother_name' => $faker->name(),
