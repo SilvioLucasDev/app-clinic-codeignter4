@@ -13,8 +13,12 @@
                 <form action="<?= url_to('patient.index') ?>" method="GET">
                     <?= csrf_field() ?>
                     <div class="input-group">
-                        <input class="form-control" type="text" name="search" placeholder="Procurar Pacientes" value="<?= service('request')->getVar('search') ?? '' ?>" name="aaaaa">
+                        <input class="form-control" type="text" name="search" placeholder="Procurar Pacientes" value="<?= service('request')->getVar('search') ?? '' ?>">
                         <button class="btn btn-primary" type="submit">Procurar</button>
+                    </div>
+                    <div class="form-check mt-1">
+                        <input class="form-check-input" type="checkbox" id="searchDeleted" name="searchDeleted" value="1" <?= service('request')->getVar('searchDeleted') ? 'checked' : '' ?>>
+                        <label class="form-check-label" for="searchDeleted">Paciente Deletados</label>
                     </div>
                 </form>
             </div>
@@ -50,7 +54,16 @@
                                             </button>
                                             <ul class="dropdown-menu">
                                                 <li><a class="dropdown-item" href="<?= url_to('patient.edit', $patient->id) ?>">Visualizar/Atualizar</a></li>
-                                                <li><button class="dropdown-item" onclick="openModalDelete('<?= url_to('patient.destroy', $patient->id) ?>')">Deletar</button></li>
+
+                                                <?php if (!service('request')->getVar('searchDeleted')) : ?>
+                                                    <li><button class="dropdown-item" onclick="openModalDelete('<?= url_to('patient.destroy', $patient->id) ?>')">Deletar</button></li>
+                                                <?php else : ?>
+                                                    <form action="<?= url_to('patient.active', $patient->id) ?>" method="POST">
+                                                        <?= csrf_field() ?>
+                                                        <input type="hidden" name="_method" value="PATCH">
+                                                        <li><button type="submit" class="dropdown-item">Ativar</button></li>
+                                                    </form>
+                                                <?php endif ?>
                                             </ul>
                                         </div>
                                     </td>

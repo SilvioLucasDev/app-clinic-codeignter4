@@ -13,11 +13,17 @@ class PatientController extends BaseController
     public function index(): string
     {
         $patientModel = new PatientModel();
+
         if ($search = $this->request->getVar('search')) {
             $patientModel->like('name', $search);
             $patientModel->orLike('cpf', $search);
             $patientModel->orLike('cns', $search);
         }
+
+        if ($this->request->getVar('searchDeleted')) {
+            $patientModel->onlyDeleted();
+        }
+
         $patients = $patientModel->select('id, name, cpf, cns')->paginate(10);
 
         return view('patient/index', [
@@ -195,5 +201,19 @@ class PatientController extends BaseController
         $patientModel->delete($patient->id);
 
         return redirect()->route('patient.index')->withInput()->with('message', ['type' => 'success', 'text' => 'Paciente deletado com sucesso']);
+    }
+
+    public function active(string $id): RedirectResponse
+    {
+        $patientModel = new PatientModel();
+        $patient = $patientModel->select('id')->withDeleted()->find($id);
+
+        if (!$patient) {
+            return redirect()->route('patient.index')->withInput()->with('message', ['type' => 'error', 'text' => 'Paciente não encontrado']);
+        }
+
+        $patientModel->update($patient->id, ['deleted_at' => null]);
+
+        return redirect()->route('patient.index')->withInput()->with('message', ['type' => 'success', 'text' => 'Paciente ativado com sucesso']);
     }
 }

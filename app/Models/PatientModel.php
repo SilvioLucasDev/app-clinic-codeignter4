@@ -19,6 +19,7 @@ class PatientModel extends Model
         'birth_date',
         'cpf',
         'cns',
+        'deleted_at'
     ];
 
     // Dates

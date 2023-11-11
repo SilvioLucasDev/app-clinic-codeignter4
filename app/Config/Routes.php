@@ -20,5 +20,6 @@ $routes->post('/patient', 'PatientController::store', ['as' => 'patient.store'])
 $routes->get('/patient/(:num)/edit', 'PatientController::edit/$1', ['as' => 'patient.edit']);
 $routes->match(['put', 'patch'], '/patient/(:num)', 'PatientController::update/$1', ['as' => 'patient.update']);
 $routes->delete('/patient/(:num)', 'PatientController::destroy/$1', ['as' => 'patient.destroy']);
+$routes->patch('/patient/(:num)/active', 'PatientController::active/$1', ['as' => 'patient.active']);
 
 service('auth')->routes($routes);
