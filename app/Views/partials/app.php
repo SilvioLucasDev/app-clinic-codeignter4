@@ -13,7 +13,7 @@
 
     <?= $this->include('partials/navbar') ?>
 
-    <main class="container pt-4">
+    <main class="container py-4">
         <?php if (isset(session()->get('message')['text'])) : ?>
             <div class="alert <?= session()->get('message')['type'] === 'error' ? 'alert-danger' : 'alert-success' ?>" role="alert">
                 <?= session()->get('message')['text'] ?? '' ?>

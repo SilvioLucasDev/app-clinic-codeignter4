@@ -3,13 +3,13 @@
 <?= $this->section('page_title') ?> Paciente <?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
-<div class="row justify-content-md-center">
-    <div class="col">
-        <div class="card">
-            <div class="card-header">
-                Cadastrar Paciente
-            </div>
-            <div class="card-body">
+<div class="card">
+    <div class="card-header">
+        Cadastrar Paciente
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col">
                 <form action="<?= url_to('patient.store') ?>" method="post" enctype="multipart/form-data">
                     <?= csrf_field() ?>
                     <div class="row g-1">

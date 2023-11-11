@@ -3,17 +3,19 @@
 <?= $this->section('page_title') ?> Paciente <?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
-<div class="row justify-content-md-center">
-    <div class="col">
-        <div class="card">
-            <div class="card-header">
-                Visualizar / Atualizar Cadastro do Paciente
+<div class="card">
+    <div class="card-header">
+        Visualizar / Atualizar Cadastro do Paciente
+    </div>
+    <div class="card-body">
+        <div class="row mb-4 text-center">
+            <div class="col">
+                <img src="<?= base_url($patient->image ?? 'assets/images/patients/default.png') ?>" alt="Foto do Paciente" height="100" width="100">
             </div>
-            <div class="card-body">
-                <div class="text-center mb-4">
-                    <img src="<?= base_url($patient->image ?? 'default.jpg') ?>" alt="Foto do Paciente" height="100" width="100">
-                </div>
+        </div>
 
+        <div class="row">
+            <div class="col">
                 <form action="<?= url_to('patient.update', $patient->id) ?>" method="post" enctype="multipart/form-data">
                     <?= csrf_field() ?>
                     <input type="hidden" name="_method" value="PATCH">
