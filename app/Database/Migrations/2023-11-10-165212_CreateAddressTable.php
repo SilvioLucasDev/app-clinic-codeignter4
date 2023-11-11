@@ -57,8 +57,8 @@ class CreateAddressTable extends Migration
             ]
         ]);
         $this->forge->addKey('id', true);
-        $this->forge->addForeignKey('patient_id', 'patients', 'id');
-        $this->forge->addForeignKey('state_id', 'states', 'id');
+        $this->forge->addForeignKey('patient_id', 'patients', 'id', 'CASCADE', 'CASCADE');
+        $this->forge->addForeignKey('state_id', 'states', 'id', 'CASCADE', 'CASCADE');
         $this->forge->createTable('addresses');
     }
 
