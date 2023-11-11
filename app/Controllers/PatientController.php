@@ -105,6 +105,10 @@ class PatientController extends BaseController
             ->join('states', 'states.id = addresses.state_id')
             ->find($id);
 
+        if (!$patient) {
+            return redirect()->route('patient.index')->withInput()->with('message', ['type' => 'error', 'text' => 'Paciente não encontrado']);
+        }
+
         $stateModel = new StateModel();
         $states = $stateModel->findAll();
 
@@ -130,6 +134,10 @@ class PatientController extends BaseController
         $patient = $patientModel->select('patients.id, patients.image, addresses.id AS address_id')
             ->join('addresses', 'addresses.patient_id = patients.id')
             ->find($id);
+
+        if (!$patient) {
+            return redirect()->route('patient.index')->withInput()->with('message', ['type' => 'error', 'text' => 'Paciente não encontrado']);
+        }
 
         if ($image->isValid()) {
             if (isset($patient->image)) {
@@ -173,5 +181,23 @@ class PatientController extends BaseController
         }
 
         return redirect()->route('patient.edit', [$id])->withInput()->with('message', ['type' => 'success', 'text' => 'Dados do paciente atualizado com sucesso']);
+    }
+
+    public function destroy(string $id): RedirectResponse
+    {
+        $patientModel = new PatientModel();
+        $patient = $patientModel->select('id, image')->find($id);
+
+        if (!$patient) {
+            return redirect()->route('patient.index')->withInput()->with('message', ['type' => 'error', 'text' => 'Paciente não encontrado']);
+        }
+
+        if (isset($patient->image)) {
+            unlink($patient->image);
+        }
+
+        $patientModel->delete($patient->id);
+
+        return redirect()->route('patient.index')->withInput()->with('message', ['type' => 'success', 'text' => 'Paciente deletado com sucesso']);
     }
 }
