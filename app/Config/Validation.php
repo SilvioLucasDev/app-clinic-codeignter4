@@ -2,8 +2,8 @@
 
 namespace Config;
 
-use App\Validation\PatientRules;
 use App\Validation\StateRules;
+use App\Validation\CustomRules;
 use CodeIgniter\Config\BaseConfig;
 use CodeIgniter\Validation\StrictRules\CreditCardRules;
 use CodeIgniter\Validation\StrictRules\FileRules;
@@ -27,8 +27,8 @@ class Validation extends BaseConfig
         FormatRules::class,
         FileRules::class,
         CreditCardRules::class,
+        CustomRules::class,
         StateRules::class,
-        PatientRules::class,
     ];
 
     /**
@@ -60,10 +60,10 @@ class Validation extends BaseConfig
             'label' => 'Dt. Nascimento', 'rules' => 'required|valid_date[Y-m-d]'
         ],
         'cpf' => [
-            'label' => 'CPF', 'rules' => 'required|min_length[14]|max_length[14]|cpf_is_unique'
+            'label' => 'CPF', 'rules' => 'required|min_length[14]|max_length[14]|is_unique_custom[patients.cpf]'
         ],
         'cns'  => [
-            'label' => 'CNS', 'rules' => 'required|min_length[18]|max_length[18]|cns_is_unique'
+            'label' => 'CNS', 'rules' => 'required|min_length[18]|max_length[18]|is_unique_custom[patients.cns]'
         ],
         'zipcode' => [
             'label' => 'CEP', 'rules' => 'required|min_length[9]|max_length[9]'
@@ -85,6 +85,52 @@ class Validation extends BaseConfig
         ],
         'state_id' => [
             'label' => 'Estado', 'rules' => 'required|is_valid_state_id'
+        ],
+    ];
+
+    public array $patient_update = [
+        'id' => [
+            'rules' => 'required'
+        ],
+        'image' => [
+            'label' => 'Foto',
+            'rules' => 'is_image[image]|ext_in[image,png,jpg,gif]'
+        ],
+        'name' => [
+            'label' => 'Nome', 'rules' => 'min_length[3]|max_length[100]'
+        ],
+        'mother_name' => [
+            'label' => 'Nome da Mãe', 'rules' => 'min_length[3]|max_length[100]'
+        ],
+        'birth_date'  => [
+            'label' => 'Dt. Nascimento', 'rules' => 'valid_date[Y-m-d]'
+        ],
+        'cpf' => [
+            'label' => 'CPF', 'rules' => 'min_length[14]|max_length[14]|is_unique_custom[patients.cpf,id,{id}]'
+        ],
+        'cns'  => [
+            'label' => 'CNS', 'rules' => 'min_length[18]|max_length[18]|is_unique_custom[patients.cns,id,{id}]'
+        ],
+        'zipcode' => [
+            'label' => 'CEP', 'rules' => 'min_length[9]|max_length[9]'
+        ],
+        'street' => [
+            'label' => 'Rua', 'rules' => 'min_length[3]|max_length[100]'
+        ],
+        'number' => [
+            'label' => 'Número', 'rules' => 'numeric|max_length[10]'
+        ],
+        'complement' => [
+            'label' => 'Complemento', 'rules' => 'max_length[100]'
+        ],
+        'neighborhood' => [
+            'label' => 'Bairro', 'rules' => 'min_length[3]|max_length[100]'
+        ],
+        'city' => [
+            'label' => 'Cidade', 'rules' => 'min_length[3]|max_length[100]'
+        ],
+        'state_id' => [
+            'label' => 'Estado', 'rules' => 'is_valid_state_id'
         ],
     ];
 }
