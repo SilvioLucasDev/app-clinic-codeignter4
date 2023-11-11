@@ -3,6 +3,7 @@
 namespace Config;
 
 use App\Validation\CnsRules;
+use App\Validation\CpfRules;
 use App\Validation\StateRules;
 use App\Validation\CustomRules;
 use CodeIgniter\Config\BaseConfig;
@@ -30,7 +31,8 @@ class Validation extends BaseConfig
         CreditCardRules::class,
         CustomRules::class,
         StateRules::class,
-        CnsRules::class
+        CnsRules::class,
+        CpfRules::class
     ];
 
     /**
@@ -62,7 +64,7 @@ class Validation extends BaseConfig
             'label' => 'Dt. Nascimento', 'rules' => 'required|valid_date[Y-m-d]'
         ],
         'cpf' => [
-            'label' => 'CPF', 'rules' => 'required|min_length[11]|max_length[14]|is_unique_custom[patients.cpf]'
+            'label' => 'CPF', 'rules' => 'required|min_length[11]|max_length[14]|cpf_is_valid|is_unique_custom[patients.cpf]'
         ],
         'cns'  => [
             'label' => 'CNS', 'rules' => 'required|min_length[15]|max_length[18]|cns_is_valid|is_unique_custom[patients.cns]'
@@ -108,10 +110,10 @@ class Validation extends BaseConfig
             'label' => 'Dt. Nascimento', 'rules' => 'valid_date[Y-m-d]'
         ],
         'cpf' => [
-            'label' => 'CPF', 'rules' => 'min_length[11]|max_length[14]|is_unique_custom[patients.cpf,id,{id}]'
+            'label' => 'CPF', 'rules' => 'min_length[11]|max_length[14]|cpf_is_valid|is_unique_custom[patients.cpf,id,{id}]'
         ],
         'cns'  => [
-            'label' => 'CNS', 'rules' => 'min_length[15]|max_length[18]|is_unique_custom[patients.cns,id,{id}]'
+            'label' => 'CNS', 'rules' => 'min_length[15]|max_length[18]|cns_is_valid|is_unique_custom[patients.cns,id,{id}]'
         ],
         'zipcode' => [
             'label' => 'CEP', 'rules' => 'min_length[8]|max_length[9]'
