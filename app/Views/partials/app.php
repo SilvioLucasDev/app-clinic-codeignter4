@@ -14,9 +14,9 @@
     <?= $this->include('partials/navbar') ?>
 
     <main class="container pt-4">
-        <?php if (session()->get('message')) : ?>
-            <div class="alert  <?= session()->get('message')['type'] === 'error' ? 'alert-danger' : 'alert-success' ?>" role="alert">
-                <?= session()->get('message')['text'] ?>
+        <?php if (isset(session()->get('message')['text'])) : ?>
+            <div class="alert <?= session()->get('message')['type'] === 'error' ? 'alert-danger' : 'alert-success' ?>" role="alert">
+                <?= session()->get('message')['text'] ?? '' ?>
             </div>
         <?php endif ?>
 

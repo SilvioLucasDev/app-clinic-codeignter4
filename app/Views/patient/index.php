@@ -51,9 +51,8 @@
                                                         ...
                                                     </button>
                                                     <ul class="dropdown-menu">
-                                                        <li><a class="dropdown-item" href="#">Visualizar</a></li>
-                                                        <li><a class="dropdown-item" href="<?= url_to('patient.edit', $patient->id) ?>">Editar</a></li>
-                                                        <li><a class="dropdown-item" href="#">Apagar</a></li>
+                                                        <li><a class="dropdown-item" href="<?= url_to('patient.edit', $patient->id) ?>">Visualizar/Atualizar</a></li>
+                                                        <li><a class="dropdown-item" href="#">Deletar</a></li>
                                                     </ul>
                                                 </div>
                                             </td>

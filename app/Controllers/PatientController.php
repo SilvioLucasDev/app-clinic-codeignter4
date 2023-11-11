@@ -53,15 +53,14 @@ class PatientController extends BaseController
             if (!$image->move('assets/images/patients', $image->getRandomName())) {
                 return redirect()->route('patient.create')->withInput()->with('message', ['type' => 'error', 'text' => 'Erro ao cadastrar paciente']);
             }
+            $data['image'] = $image->getTempName() . $image->getName();
         }
-
-        $data['image'] = $image->getTempName() . $image->getName();
 
         $patientModel = new PatientModel();
         $addressModel = new AddressModel();
 
         $patientData = [
-            'image' => $data['image'],
+            'image' => $data['image'] ?? null,
             'name' => $data['name'],
             'mother_name' => $data['mother_name'],
             'birth_date' => $data['birth_date'],
@@ -100,7 +99,7 @@ class PatientController extends BaseController
         $patientModel = new PatientModel();
         $patient = $patientModel->select('
                 patients.id, patients.image, patients.name, patients.mother_name, patients.birth_date, patients.cpf, patients.cns,
-                addresses.zipcode, addresses.street, addresses.number, addresses.complement, addresses.neighborhood, addresses.city, addresses.state_id,
+                addresses.zipcode, addresses.street, addresses.number, addresses.complement, addresses.neighborhood, addresses.city, addresses.state_id
             ')
             ->join('addresses', 'addresses.patient_id = patients.id')
             ->join('states', 'states.id = addresses.state_id')
@@ -113,5 +112,66 @@ class PatientController extends BaseController
             'patient' => $patient,
             'states' => $states
         ]);
+    }
+
+    public function update(string $id): RedirectResponse
+    {
+        helper('custom');
+
+        if (!$this->validate('patient_update')) {
+            return redirect()->route('patient.edit', [$id])->withInput()->with('errors', $this->validator->getErrors());
+        }
+
+        $data = $this->validator->getValidated();
+        $image = $this->request->getFile('image');
+
+        $addressModel = new AddressModel();
+        $patientModel = new PatientModel();
+        $patient = $patientModel->select('patients.id, patients.image, addresses.id AS address_id')
+            ->join('addresses', 'addresses.patient_id = patients.id')
+            ->find($id);
+
+        if ($image->isValid()) {
+            if (isset($patient->image)) {
+                unlink($patient->image);
+            }
+            if (!$image->move('assets/images/patients', $image->getRandomName())) {
+                return redirect()->route('patient.edit', [$id])->withInput()->with('message', ['type' => 'error', 'text' => 'Erro ao atualizar os dados do paciente']);
+            }
+            $data['image'] = $image->getTempName() . $image->getName();
+        }
+
+        $patientData = [
+            'image' => $data['image'] ?? null,
+            'name' => $data['name'],
+            'mother_name' => $data['mother_name'],
+            'birth_date' => $data['birth_date'],
+            'cpf' => sanitize_number($data['cpf']),
+            'cns' => sanitize_number($data['cns']),
+        ];
+
+        $addressData = [
+            'zipcode' => sanitize_number($data['zipcode']),
+            'street' => $data['street'],
+            'number' => $data['number'],
+            'complement' => $data['complement'],
+            'neighborhood' => $data['neighborhood'],
+            'city' => $data['city'],
+            'state_id' => $data['state_id'],
+        ];
+
+        $patientModel->transStart();
+        $patientModel->update($patient->id, $patientData);
+        $addressModel->update($patient->address_id, $addressData);
+        $patientModel->transComplete();
+
+        if ($patientModel->transStatus() === false) {
+            if (isset($data['image'])) {
+                unlink($data['image']);
+            }
+            return redirect()->route('patient.edit', [$id])->withInput()->with('message', ['type' => 'error', 'text' => 'Erro ao atualizar os dados do paciente']);
+        }
+
+        return redirect()->route('patient.edit', [$id])->withInput()->with('message', ['type' => 'success', 'text' => 'Dados do paciente atualizado com sucesso']);
     }
 }

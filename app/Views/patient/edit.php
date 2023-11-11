@@ -7,22 +7,29 @@
     <div class="col">
         <div class="card">
             <div class="card-header">
-                Atualizar Cadastro do Paciente
+                Visualizar / Atualizar Cadastro do Paciente
             </div>
             <div class="card-body">
-                <form action="#" method="post" enctype="multipart/form-data">
+                <div class="text-center mb-4">
+                    <img src="<?= base_url($patient->image ?? 'default.jpg') ?>" alt="Foto do Paciente" height="100" width="100">
+                </div>
+
+                <form action="<?= url_to('patient.update', $patient->id) ?>" method="post" enctype="multipart/form-data">
                     <?= csrf_field() ?>
+                    <input type="hidden" name="_method" value="PATCH">
+                    <input type="hidden" name="id" value="<?= $patient->id ?>">
+
                     <div class="row g-1">
                         <div class="col-md-6">
                             <label for="name" class="form-label">Nome *</label>
-                            <input type="text" class="form-control" id="name" name="name" value="<?= $patient->name ?? old('name') ?>">
+                            <input type="text" class="form-control" id="name" name="name" value="<?= old('name') ?? $patient->name ?>">
                             <span class="text text-danger">
                                 <?= display_error('name') ?>
                             </span>
                         </div>
                         <div class="col-md-6">
                             <label for="birth_date" class="form-label">Dt. Nascimento *</label>
-                            <input type="date" class="form-control" id="birth_date" name="birth_date" value="<?= $patient->birth_date ?? old('birth_date') ?>">
+                            <input type="date" class="form-control" id="birth_date" name="birth_date" value="<?= old('birth_date') ?? $patient->birth_date ?>">
                             <span class="text text-danger">
                                 <?= display_error('birth_date') ?>
                             </span>
@@ -30,14 +37,14 @@
 
                         <div class="col-md-6">
                             <label for="cpf" class="form-label">CPF *</label>
-                            <input type="text" class="form-control" id="cpf" name="cpf" value="<?= $patient->cpf ?? old('cpf') ?>">
+                            <input type="text" class="form-control" id="cpf" name="cpf" value="<?= old('cpf') ?? $patient->cpf ?>">
                             <span class="text text-danger">
                                 <?= display_error('cpf') ?>
                             </span>
                         </div>
                         <div class="col-md-6">
                             <label for="cns" class="form-label">CNS *</label>
-                            <input type="text" class="form-control" id="cns" name="cns" value="<?= $patient->cns ?? old('cns') ?>">
+                            <input type="text" class="form-control" id="cns" name="cns" value="<?= old('cns') ?? $patient->cns ?>">
                             <span class="text text-danger">
                                 <?= display_error('cns') ?>
                             </span>
@@ -53,7 +60,7 @@
 
                         <div class="col-md-12">
                             <label for="mother_name" class="form-label">Nome da Mãe *</label>
-                            <input type="text" class="form-control" id="mother_name" name="mother_name" value="<?= $patient->mother_name ?? old('mother_name') ?>">
+                            <input type="text" class="form-control" id="mother_name" name="mother_name" value="<?= old('mother_name') ?? $patient->mother_name ?>">
                             <span class="text text-danger">
                                 <?= display_error('mother_name') ?>
                             </span>
@@ -61,14 +68,14 @@
 
                         <div class="col-md-3">
                             <label for="zipcode" class="form-label">CEP *</label>
-                            <input type="text" class="form-control" id="zipcode" name="zipcode" value="<?= $patient->zipcode ?? old('zipcode') ?>">
+                            <input type="text" class="form-control" id="zipcode" name="zipcode" value="<?= old('zipcode') ?? $patient->zipcode ?>">
                             <span class="text text-danger">
                                 <?= display_error('zipcode') ?>
                             </span>
                         </div>
                         <div class="col-md-4">
                             <label for="street" class="form-label">Rua *</label>
-                            <input type="text" class="form-control" id="street" name="street" value="<?= $patient->street ?? old('street') ?>">
+                            <input type="text" class="form-control" id="street" name="street" value="<?= old('street') ?? $patient->street ?>">
                             <span class="text text-danger">
                                 <?= display_error('street') ?>
                             </span>
@@ -76,7 +83,7 @@
 
                         <div class="col-md-5">
                             <label for="neighborhood" class="form-label">Bairro *</label>
-                            <input type="text" class="form-control" id="neighborhood" name="neighborhood" value="<?= $patient->neighborhood ?? old('neighborhood') ?>">
+                            <input type="text" class="form-control" id="neighborhood" name="neighborhood" value="<?= old('neighborhood') ?? $patient->neighborhood ?>">
                             <span class="text text-danger">
                                 <?= display_error('neighborhood') ?>
                             </span>
@@ -84,14 +91,14 @@
 
                         <div class="col-6">
                             <label for="number" class="form-label">Número *</label>
-                            <input type="text" class="form-control" id="number" name="number" value="<?= $patient->number ?? old('number') ?>">
+                            <input type="text" class="form-control" id="number" name="number" value="<?= old('number') ?? $patient->number ?>">
                             <span class="text text-danger">
                                 <?= display_error('number') ?>
                             </span>
                         </div>
                         <div class="col-6">
                             <label for="complement" class="form-label">Complemento</label>
-                            <input type="text" class="form-control" id="complement" name="complement" value="<?= $patient->complement ?? old('complement') ?>">
+                            <input type="text" class="form-control" id="complement" name="complement" value="<?= old('complement') ?? $patient->complement ?>">
                             <span class="text text-danger">
                                 <?= display_error('complement') ?>
                             </span>
@@ -99,7 +106,7 @@
 
                         <div class="col-6">
                             <label for="city" class="form-label">Cidade *</label>
-                            <input type="text" class="form-control" id="city" name="city" value="<?= $patient->city ?? old('city') ?>">
+                            <input type="text" class="form-control" id="city" name="city" value="<?= old('city') ?? $patient->city ?>">
                             <span class="text text-danger">
                                 <?= display_error('city') ?>
                             </span>
@@ -109,7 +116,7 @@
                             <select class="form-select" id="state_id" name="state_id">
                                 <option value="" selected>Selecione um Estado</option>
                                 <?php foreach ($states as $state) : ?>
-                                    <option value="<?= $state->id ?>" <?= ($patient->state_id ?? old('state_id')) === $state->id ? 'selected' : '' ?>><?= $state->name ?></option>
+                                    <option value="<?= $state->id ?>" <?= (old('state_id') ?? $patient->state_id) === $state->id ? 'selected' : '' ?>><?= $state->name ?></option>
                                 <?php endforeach ?>
                             </select>
                             <span class="text text-danger">
