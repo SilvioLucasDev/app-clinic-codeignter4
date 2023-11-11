@@ -186,14 +186,10 @@ class PatientController extends BaseController
     public function destroy(string $id): RedirectResponse
     {
         $patientModel = new PatientModel();
-        $patient = $patientModel->select('id, image')->find($id);
+        $patient = $patientModel->select('id')->find($id);
 
         if (!$patient) {
             return redirect()->route('patient.index')->withInput()->with('message', ['type' => 'error', 'text' => 'Paciente não encontrado']);
-        }
-
-        if (isset($patient->image)) {
-            unlink($patient->image);
         }
 
         $patientModel->delete($patient->id);
