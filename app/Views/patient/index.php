@@ -45,7 +45,18 @@
                                             <td><?= $patient->name ?></td>
                                             <td><?= $patient->cpf ?></td>
                                             <td><?= $patient->cns ?></td>
-                                            <td>...</td>
+                                            <td>
+                                                <div class="dropdown">
+                                                    <button class="btn btn-secondary" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                        ...
+                                                    </button>
+                                                    <ul class="dropdown-menu">
+                                                        <li><a class="dropdown-item" href="#">Visualizar</a></li>
+                                                        <li><a class="dropdown-item" href="<?= url_to('patient.edit', $patient->id) ?>">Editar</a></li>
+                                                        <li><a class="dropdown-item" href="#">Apagar</a></li>
+                                                    </ul>
+                                                </div>
+                                            </td>
                                         </tr>
                                     <?php endforeach ?>
                                 </tbody>

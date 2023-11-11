@@ -12,17 +12,17 @@ class PatientController extends BaseController
 {
     public function index(): string
     {
-        $patient = new PatientModel();
+        $patientModel = new PatientModel();
         if ($search = $this->request->getVar('search')) {
-            $patient->like('name', $search);
-            $patient->orLike('cpf', $search);
-            $patient->orLike('cns', $search);
+            $patientModel->like('name', $search);
+            $patientModel->orLike('cpf', $search);
+            $patientModel->orLike('cns', $search);
         }
-        $patients = $patient->select('id, name, cpf, cns')->paginate(10);
+        $patients = $patientModel->select('id, name, cpf, cns')->paginate(10);
 
         return view('patient/index', [
             'patients' => $patients,
-            'pager' => $patient->pager,
+            'pager' => $patientModel->pager,
         ]);
     }
 
@@ -30,8 +30,8 @@ class PatientController extends BaseController
     {
         helper('custom');
 
-        $state = new StateModel();
-        $states = $state->findAll();
+        $stateModel = new StateModel();
+        $states = $stateModel->findAll();
 
         return view('patient/create', [
             'states' => $states
@@ -91,5 +91,27 @@ class PatientController extends BaseController
         }
 
         return redirect()->route('patient.index')->withInput()->with('message', ['type' => 'success', 'text' => 'Paciente cadastrado com sucesso']);
+    }
+
+    public function edit(string $id): string
+    {
+        helper('custom');
+
+        $patientModel = new PatientModel();
+        $patient = $patientModel->select('
+                patients.id, patients.image, patients.name, patients.mother_name, patients.birth_date, patients.cpf, patients.cns,
+                addresses.zipcode, addresses.street, addresses.number, addresses.complement, addresses.neighborhood, addresses.city, addresses.state_id,
+            ')
+            ->join('addresses', 'addresses.patient_id = patients.id')
+            ->join('states', 'states.id = addresses.state_id')
+            ->find($id);
+
+        $stateModel = new StateModel();
+        $states = $stateModel->findAll();
+
+        return view('patient/edit', [
+            'patient' => $patient,
+            'states' => $states
+        ]);
     }
 }
