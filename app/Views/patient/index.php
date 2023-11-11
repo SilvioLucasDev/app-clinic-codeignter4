@@ -49,14 +49,14 @@
                                     <td><?= $patient->cns ?></td>
                                     <td>
                                         <div class="dropdown">
-                                            <button class="btn btn-secondary" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                                ...
+                                            <button type="button" class="btn btn-link text-black " data-bs-toggle="dropdown" aria-expanded="false">
+                                                <i class="fa-solid fa-ellipsis"></i>
                                             </button>
                                             <ul class="dropdown-menu">
                                                 <li><a class="dropdown-item" href="<?= url_to('patient.edit', $patient->id) ?>">Visualizar/Atualizar</a></li>
 
                                                 <?php if (!service('request')->getVar('searchDeleted')) : ?>
-                                                    <li><button class="dropdown-item" onclick="openModalDelete('<?= url_to('patient.destroy', $patient->id) ?>')">Deletar</button></li>
+                                                    <li><button class="dropdown-item text-danger" onclick="openModalDelete('<?= url_to('patient.destroy', $patient->id) ?>')">Deletar</button></li>
                                                 <?php else : ?>
                                                     <form action="<?= url_to('patient.active', $patient->id) ?>" method="POST">
                                                         <?= csrf_field() ?>
