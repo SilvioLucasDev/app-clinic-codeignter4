@@ -44,9 +44,4 @@ class PatientModel extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
-
-    public function getAddresses($id)
-    {
-        return $this->db->table('addresses')->where('patient_id', $id)->get()->getResult();
-    }
 }

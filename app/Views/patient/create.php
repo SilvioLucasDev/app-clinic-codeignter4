@@ -3,13 +3,6 @@
 <?= $this->section('page_title') ?> Paciente <?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
-
-<?php if (session()->get('message')) : ?>
-    <div class="alert  <?= session()->get('message')['type'] === 'error' ? 'alert-danger' : 'alert-success' ?>" role="alert">
-        <?= session()->get('message')['text'] ?>
-    </div>
-<?php endif ?>
-
 <div class="row justify-content-md-center">
     <div class="col">
         <div class="card">

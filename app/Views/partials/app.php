@@ -11,12 +11,16 @@
 <body>
     <?= $this->renderSection('css') ?>
 
-    <main class="container">
-        <?= $this->include('partials/navbar') ?>
+    <?= $this->include('partials/navbar') ?>
 
-        <div class="mt-4 mx-4">
-            <?= $this->renderSection('content') ?>
-        </div>
+    <main class="container pt-4">
+        <?php if (session()->get('message')) : ?>
+            <div class="alert  <?= session()->get('message')['type'] === 'error' ? 'alert-danger' : 'alert-success' ?>" role="alert">
+                <?= session()->get('message')['text'] ?>
+            </div>
+        <?php endif ?>
+
+        <?= $this->renderSection('content') ?>
     </main>
 
     <?= $this->renderSection('js') ?>

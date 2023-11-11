@@ -51,7 +51,7 @@ class PatientController extends BaseController
 
         if ($image->isValid()) {
             if (!$image->move('assets/images/patients', $image->getRandomName())) {
-                return redirect()->route('patient.create')->withInput()->with('message', ['type' => 'error', 'text' => 'Erro ao salvar a imagem ']);
+                return redirect()->route('patient.create')->withInput()->with('message', ['type' => 'error', 'text' => 'Erro ao cadastrar paciente']);
             }
         }
 
@@ -90,6 +90,6 @@ class PatientController extends BaseController
             return redirect()->route('patient.create')->withInput()->with('message', ['type' => 'error', 'text' => 'Erro ao cadastrar paciente']);
         }
 
-        return redirect()->route('patient.index')->withInput()->with('message', ['type' => 'success', 'text' => 'Paciente criado com sucesso']);
+        return redirect()->route('patient.index')->withInput()->with('message', ['type' => 'success', 'text' => 'Paciente cadastrado com sucesso']);
     }
 }
