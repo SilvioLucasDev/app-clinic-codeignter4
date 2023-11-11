@@ -2,6 +2,8 @@
 
 namespace Config;
 
+use App\Validation\PatientRules;
+use App\Validation\StateRules;
 use CodeIgniter\Config\BaseConfig;
 use CodeIgniter\Validation\StrictRules\CreditCardRules;
 use CodeIgniter\Validation\StrictRules\FileRules;
@@ -25,6 +27,8 @@ class Validation extends BaseConfig
         FormatRules::class,
         FileRules::class,
         CreditCardRules::class,
+        StateRules::class,
+        PatientRules::class,
     ];
 
     /**
@@ -41,4 +45,46 @@ class Validation extends BaseConfig
     // --------------------------------------------------------------------
     // Rules
     // --------------------------------------------------------------------
+    public array $patient_store = [
+        'image' => [
+            'label' => 'Foto',
+            'rules' => 'is_image[image]|ext_in[image,png,jpg,gif]'
+        ],
+        'name' => [
+            'label' => 'Nome', 'rules' => 'required|min_length[3]|max_length[100]'
+        ],
+        'mother_name' => [
+            'label' => 'Nome da Mãe', 'rules' => 'required|min_length[3]|max_length[100]'
+        ],
+        'birth_date'  => [
+            'label' => 'Dt. Nascimento', 'rules' => 'required|valid_date[Y-m-d]'
+        ],
+        'cpf' => [
+            'label' => 'CPF', 'rules' => 'required|min_length[14]|max_length[14]|cpf_is_unique'
+        ],
+        'cns'  => [
+            'label' => 'CNS', 'rules' => 'required|min_length[18]|max_length[18]|cns_is_unique'
+        ],
+        'zipcode' => [
+            'label' => 'CEP', 'rules' => 'required|min_length[9]|max_length[9]'
+        ],
+        'street' => [
+            'label' => 'Rua', 'rules' => 'required|min_length[3]|max_length[100]'
+        ],
+        'number' => [
+            'label' => 'Número', 'rules' => 'required|numeric|max_length[10]'
+        ],
+        'complement' => [
+            'label' => 'Complemento', 'rules' => 'max_length[100]'
+        ],
+        'neighborhood' => [
+            'label' => 'Bairro', 'rules' => 'required|min_length[3]|max_length[100]'
+        ],
+        'city' => [
+            'label' => 'Cidade', 'rules' => 'required|min_length[3]|max_length[100]'
+        ],
+        'state_id' => [
+            'label' => 'Estado', 'rules' => 'required|is_valid_state_id'
+        ],
+    ];
 }
