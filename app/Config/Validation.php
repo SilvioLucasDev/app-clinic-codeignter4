@@ -69,7 +69,7 @@ class Validation extends BaseConfig
         'cns'  => [
             'label' => 'CNS', 'rules' => 'required|min_length[15]|max_length[18]|cns_is_valid|is_unique_custom[patients.cns]'
         ],
-        'zipcode' => [
+        'zip_code' => [
             'label' => 'CEP', 'rules' => 'required|min_length[8]|max_length[9]'
         ],
         'street' => [
@@ -115,7 +115,7 @@ class Validation extends BaseConfig
         'cns'  => [
             'label' => 'CNS', 'rules' => 'min_length[15]|max_length[18]|cns_is_valid|is_unique_custom[patients.cns,id,{id}]'
         ],
-        'zipcode' => [
+        'zip_code' => [
             'label' => 'CEP', 'rules' => 'min_length[8]|max_length[9]'
         ],
         'street' => [

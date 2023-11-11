@@ -18,7 +18,7 @@ class CreateAddressTable extends Migration
                 'type' => 'BIGINT',
                 'unsigned' => true,
             ],
-            'zipcode' => [
+            'zip_code' => [
                 'type' => 'VARCHAR',
                 'constraint' => '8',
             ],

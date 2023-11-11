@@ -14,7 +14,7 @@ class AddressModel extends Model
     protected $protectFields    = true;
     protected $allowedFields    = [
         'patient_id',
-        'zipcode',
+        'zip_code',
         'street',
         'number',
         'complement',

@@ -69,10 +69,10 @@
                         </div>
 
                         <div class="col-md-3">
-                            <label for="zipcode" class="form-label">CEP *</label>
-                            <input type="text" class="form-control" id="zipcode" name="zipcode" value="<?= old('zipcode') ?? $patient->zipcode ?>" onblur="searchZipCode(this.value)">
+                            <label for="zip_code" class="form-label">CEP *</label>
+                            <input type="text" class="form-control" id="zip_code" name="zip_code" value="<?= old('zip_code') ?? $patient->zip_code ?>" onblur="searchZipCode(this.value)">
                             <span class="text text-danger">
-                                <?= display_error('zipcode') ?>
+                                <?= display_error('zip_code') ?>
                             </span>
                         </div>
                         <div class="col-md-4">

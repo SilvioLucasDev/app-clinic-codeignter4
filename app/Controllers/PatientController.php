@@ -75,7 +75,7 @@ class PatientController extends BaseController
         ];
 
         $addressData = [
-            'zipcode' => sanitize_number($data['zipcode']),
+            'zip_code' => sanitize_number($data['zip_code']),
             'street' => $data['street'],
             'number' => $data['number'],
             'complement' => $data['complement'],
@@ -105,7 +105,7 @@ class PatientController extends BaseController
         $patientModel = new PatientModel();
         $patient = $patientModel->select('
                 patients.id, patients.image, patients.name, patients.mother_name, patients.birth_date, patients.cpf, patients.cns,
-                addresses.zipcode, addresses.street, addresses.number, addresses.complement, addresses.neighborhood, addresses.city, addresses.state_id
+                addresses.zip_code, addresses.street, addresses.number, addresses.complement, addresses.neighborhood, addresses.city, addresses.state_id
             ')
             ->join('addresses', 'addresses.patient_id = patients.id')
             ->join('states', 'states.id = addresses.state_id')
@@ -165,7 +165,7 @@ class PatientController extends BaseController
         ];
 
         $addressData = [
-            'zipcode' => sanitize_number($data['zipcode']),
+            'zip_code' => sanitize_number($data['zip_code']),
             'street' => $data['street'],
             'number' => $data['number'],
             'complement' => $data['complement'],

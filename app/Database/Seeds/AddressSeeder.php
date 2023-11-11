@@ -16,7 +16,7 @@ class AddressSeeder extends Seeder
         for ($i = 1; $i <= $numberOfLines; $i++) {
             $data = [
                 'patient_id' => $faker->unique()->numberBetween(1, $numberOfLines),
-                'zipcode' => str_replace('-', '', $faker->postcode()),
+                'zip_code' => str_replace('-', '', $faker->postcode()),
                 'street' => $faker->streetName(),
                 'number' => $faker->buildingNumber(),
                 'complement' => $faker->secondaryAddress(),
