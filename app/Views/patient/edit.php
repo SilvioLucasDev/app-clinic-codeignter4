@@ -70,7 +70,7 @@
 
                         <div class="col-md-3">
                             <label for="zipcode" class="form-label">CEP *</label>
-                            <input type="text" class="form-control" id="zipcode" name="zipcode" value="<?= old('zipcode') ?? $patient->zipcode ?>">
+                            <input type="text" class="form-control" id="zipcode" name="zipcode" value="<?= old('zipcode') ?? $patient->zipcode ?>" onblur="searchZipCode(this.value)">
                             <span class="text text-danger">
                                 <?= display_error('zipcode') ?>
                             </span>
@@ -136,4 +136,9 @@
         </div>
     </div>
 </div>
+
+<?= $this->section('js') ?>
+<script src="<?= base_url('assets/js/viaCep.js') ?>"></script>
+<script src="<?= base_url('assets/js/mask.js') ?>"></script>
+<?= $this->endSection() ?>
 <?= $this->endSection() ?>
