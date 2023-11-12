@@ -51,8 +51,7 @@ class Validation extends BaseConfig
     // --------------------------------------------------------------------
     public array $patient_store = [
         'image' => [
-            'label' => 'Foto',
-            'rules' => 'is_image[image]|ext_in[image,png,jpg,gif]'
+            'label' => 'Foto', 'rules' => 'is_image[image]|ext_in[image,png,jpg,jpeg]'
         ],
         'name' => [
             'label' => 'Nome', 'rules' => 'required|min_length[3]|max_length[100]'
@@ -88,53 +87,52 @@ class Validation extends BaseConfig
             'label' => 'Cidade', 'rules' => 'required|min_length[3]|max_length[100]'
         ],
         'state_id' => [
-            'label' => 'Estado', 'rules' => 'required|is_valid_state_id'
+            'label' => 'Estado', 'rules' => 'required|numeric|is_valid_state_id'
         ],
     ];
 
     public array $patient_update = [
         'id' => [
-            'rules' => 'required'
+            'rules' => 'required_with[cpf,cns]'
         ],
         'image' => [
-            'label' => 'Foto',
-            'rules' => 'is_image[image]|ext_in[image,png,jpg,gif]'
+            'label' => 'Foto', 'rules' => 'if_exist|is_image[image]|ext_in[image,png,jpg,gif]'
         ],
         'name' => [
-            'label' => 'Nome', 'rules' => 'min_length[3]|max_length[100]'
+            'label' => 'Nome', 'rules' => 'if_exist|min_length[3]|max_length[100]'
         ],
         'mother_name' => [
-            'label' => 'Nome da Mãe', 'rules' => 'min_length[3]|max_length[100]'
+            'label' => 'Nome da Mãe', 'rules' => 'if_exist|min_length[3]|max_length[100]'
         ],
         'birth_date'  => [
-            'label' => 'Dt. Nascimento', 'rules' => 'valid_date[Y-m-d]'
+            'label' => 'Dt. Nascimento', 'rules' => 'if_exist|valid_date[Y-m-d]'
         ],
         'cpf' => [
-            'label' => 'CPF', 'rules' => 'min_length[11]|max_length[14]|cpf_is_valid|is_unique_custom[patients.cpf,id,{id}]'
+            'label' => 'CPF', 'rules' => 'if_exist|min_length[11]|max_length[14]|cpf_is_valid|is_unique_custom[patients.cpf,id,{id}]'
         ],
         'cns'  => [
-            'label' => 'CNS', 'rules' => 'min_length[15]|max_length[18]|cns_is_valid|is_unique_custom[patients.cns,id,{id}]'
+            'label' => 'CNS', 'rules' => 'if_exist|min_length[15]|max_length[18]|cns_is_valid|is_unique_custom[patients.cns,id,{id}]'
         ],
         'zip_code' => [
-            'label' => 'CEP', 'rules' => 'min_length[8]|max_length[9]'
+            'label' => 'CEP', 'rules' => 'if_exist|min_length[8]|max_length[9]'
         ],
         'street' => [
-            'label' => 'Rua', 'rules' => 'min_length[3]|max_length[100]'
+            'label' => 'Rua', 'rules' => 'if_exist|min_length[3]|max_length[100]'
         ],
         'number' => [
-            'label' => 'Número', 'rules' => 'numeric|max_length[10]'
+            'label' => 'Número', 'rules' => 'if_exist|numeric|max_length[10]'
         ],
         'complement' => [
-            'label' => 'Complemento', 'rules' => 'max_length[100]'
+            'label' => 'Complemento', 'rules' => 'if_exist|max_length[100]'
         ],
         'neighborhood' => [
-            'label' => 'Bairro', 'rules' => 'min_length[3]|max_length[100]'
+            'label' => 'Bairro', 'rules' => 'if_exist|min_length[3]|max_length[100]'
         ],
         'city' => [
-            'label' => 'Cidade', 'rules' => 'min_length[3]|max_length[100]'
+            'label' => 'Cidade', 'rules' => 'if_exist|min_length[3]|max_length[100]'
         ],
         'state_id' => [
-            'label' => 'Estado', 'rules' => 'is_valid_state_id'
+            'label' => 'Estado', 'rules' => 'if_exist|numeric|is_valid_state_id'
         ],
     ];
 }
