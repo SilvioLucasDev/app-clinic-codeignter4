@@ -10,7 +10,7 @@
     <div class="card-body">
         <div class="row mb-4 text-center">
             <div class="col">
-                <img src="<?= base_url($patient->image ?? 'assets/images/patients/default.png') ?>" alt="Foto do Paciente" height="100" width="100">
+                <img src="<?= base_url($patient->image ?? 'assets/images/patients/default.png') ?>" alt="Foto do Paciente">
             </div>
         </div>
 

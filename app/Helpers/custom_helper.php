@@ -2,6 +2,7 @@
 
 use CodeIgniter\HTTP\Files\UploadedFile;
 use CodeIgniter\HTTP\RedirectResponse;
+use Config\Services;
 
 if (!function_exists('display_error')) {
     function display_error(string $field): string
@@ -20,10 +21,15 @@ if (!function_exists('sanitize_number')) {
 if (!function_exists('upload_image')) {
     function upload_image(UploadedFile $image, string $path): string|bool
     {
-        if (!$image->move($path, $image->getRandomName())) {
-            return false;
-        }
-        return $image->getTempName() . $image->getName();
+        $imageName = $image->getRandomName();
+        $uploaded = Services::image('gd')
+            ->withFile($image)
+            ->fit(150, 150)
+            ->save(FCPATH . "$path/$imageName", 100);
+
+        if (!$uploaded) return false;
+
+        return "$path/$imageName";
     }
 }
 
