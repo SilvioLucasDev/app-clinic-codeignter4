@@ -45,8 +45,8 @@
                                 <tr>
                                     <th scope="row"><?= $patient->id ?></th>
                                     <td><?= $patient->name ?></td>
-                                    <td><?= $patient->cpf ?></td>
-                                    <td><?= $patient->cns ?></td>
+                                    <td class="cpf"><?= $patient->cpf ?></td>
+                                    <td class="cns"><?= $patient->cns ?></td>
                                     <td>
                                         <div class="dropdown">
                                             <button type="button" class="btn btn-link text-black " data-bs-toggle="dropdown" aria-expanded="false">
@@ -107,6 +107,7 @@
 <!-- / Confirm Delete Modal -->
 
 <?= $this->section('js') ?>
+<script src="<?= base_url('assets/js/mask.js') ?>"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const deletarPacienteModal = new bootstrap.Modal(document.getElementById('deletarPacienteModal'));

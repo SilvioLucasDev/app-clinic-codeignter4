@@ -30,14 +30,14 @@
 
                         <div class="col-md-6">
                             <label for="cpf" class="form-label">CPF *</label>
-                            <input type="text" class="form-control" id="cpf" name="cpf" value="<?= old('cpf') ?>">
+                            <input type="text" class="form-control cpf" id="cpf" name="cpf" value="<?= old('cpf') ?>">
                             <span class="text text-danger">
                                 <?= display_error('cpf') ?>
                             </span>
                         </div>
                         <div class="col-md-6">
                             <label for="cns" class="form-label">CNS *</label>
-                            <input type="text" class="form-control" id="cns" name="cns" value="<?= old('cns') ?>">
+                            <input type="text" class="form-control cns" id="cns" name="cns" value="<?= old('cns') ?>">
                             <span class="text text-danger">
                                 <?= display_error('cns') ?>
                             </span>
@@ -61,7 +61,7 @@
 
                         <div class="col-md-3">
                             <label for="zip_code" class="form-label">CEP *</label>
-                            <input type="text" class="form-control" id="zip_code" name="zip_code" value="<?= old('zip_code') ?>" onblur="searchZipCode(this.value)">
+                            <input type="text" class="form-control zip_code" id="zip_code" name="zip_code" value="<?= old('zip_code') ?>" onblur="searchZipCode(this.value)">
                             <span class="text text-danger">
                                 <?= display_error('zip_code') ?>
                             </span>
