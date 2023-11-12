@@ -37,12 +37,20 @@ class PatientModel extends Model
 
     // Callbacks
     protected $allowCallbacks = true;
-    protected $beforeInsert   = [];
+    protected $beforeInsert   = ['sanitizeFields'];
     protected $afterInsert    = [];
-    protected $beforeUpdate   = [];
+    protected $beforeUpdate   = ['sanitizeFields'];
     protected $afterUpdate    = [];
     protected $beforeFind     = [];
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
+
+    protected function sanitizeFields(array $data): array
+    {
+        if (isset($data['data']['cpf']))  $data['data']['cpf'] = sanitize_number($data['data']['cpf']);
+        if (isset($data['data']['cns'])) $data['data']['cns'] = sanitize_number($data['data']['cns']);
+
+        return $data;
+    }
 }

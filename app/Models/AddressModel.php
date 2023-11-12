@@ -38,12 +38,19 @@ class AddressModel extends Model
 
     // Callbacks
     protected $allowCallbacks = true;
-    protected $beforeInsert   = [];
+    protected $beforeInsert   = ['sanitizeFields'];
     protected $afterInsert    = [];
-    protected $beforeUpdate   = [];
+    protected $beforeUpdate   = ['sanitizeFields'];
     protected $afterUpdate    = [];
     protected $beforeFind     = [];
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
+
+    protected function sanitizeFields(array $data): array
+    {
+        if (isset($data['data']['zip_code'])) $data['data']['zip_code'] = sanitize_number($data['data']['zip_code']);
+
+        return $data;
+    }
 }

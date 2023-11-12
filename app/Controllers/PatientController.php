@@ -7,103 +7,74 @@ use App\Models\AddressModel;
 use App\Models\PatientModel;
 use App\Models\StateModel;
 use CodeIgniter\HTTP\RedirectResponse;
+use Config\Database;
 
 class PatientController extends BaseController
 {
+    public function __construct(
+        protected PatientModel $patientModel = new PatientModel(),
+        protected AddressModel $addressModel = new AddressModel(),
+        protected StateModel $stateModel = new StateModel()
+    ) {
+    }
+
     public function index(): string
     {
-        $patientModel = new PatientModel();
-
         if ($search = $this->request->getVar('search')) {
-            $patientModel->like('name', $search);
-            $patientModel->orLike('cpf', $search);
-            $patientModel->orLike('cns', $search);
+            $this->patientModel->like('name', $search);
+            $this->patientModel->orLike('cpf', $search);
+            $this->patientModel->orLike('cns', $search);
         }
 
-        if ($this->request->getVar('searchDeleted')) {
-            $patientModel->onlyDeleted();
-        }
+        if ($this->request->getVar('searchDeleted')) $this->patientModel->onlyDeleted();
 
-        $patients = $patientModel->select('id, name, cpf, cns')->paginate(10);
+        $patients = $this->patientModel->select('id, name, cpf, cns')->orderBy('id')->paginate(10);
 
         return view('patient/index', [
             'patients' => $patients,
-            'pager' => $patientModel->pager,
+            'pager' => $this->patientModel->pager,
         ]);
     }
 
     public function create(): string
     {
-        helper('custom');
-
-        $stateModel = new StateModel();
-        $states = $stateModel->findAll();
-
         return view('patient/create', [
-            'states' => $states
+            'states' => $this->stateModel->findAll()
         ]);
     }
 
     public function store(): RedirectResponse
     {
-        helper('custom');
-
         if (!$this->validate('patient_store')) {
             return redirect()->route('patient.create')->withInput()->with('errors', $this->validator->getErrors());
         }
 
         $data = $this->validator->getValidated();
+
         $image = $this->request->getFile('image');
-
         if ($image->isValid()) {
-            if (!$image->move('assets/images/patients', $image->getRandomName())) {
-                return redirect()->route('patient.create')->withInput()->with('message', ['type' => 'error', 'text' => 'Erro ao cadastrar paciente']);
-            }
-            $data['image'] = $image->getTempName() . $image->getName();
+            $path = upload_image($image, 'assets/images/patients');
+            if (!$path) return handle_response('error', 'Erro ao cadastrar paciente', 'patient.create');
+            $data['image'] = $path;
         }
 
-        $patientModel = new PatientModel();
-        $addressModel = new AddressModel();
+        $db = Database::connect();
+        $db->transStart();
+        $this->patientModel->save($data);
+        $data['patient_id'] = $this->patientModel->getInsertID();
+        $this->addressModel->save($data);
 
-        $patientData = [
-            'image' => $data['image'] ?? null,
-            'name' => $data['name'],
-            'mother_name' => $data['mother_name'],
-            'birth_date' => $data['birth_date'],
-            'cpf' => sanitize_number($data['cpf']),
-            'cns' => sanitize_number($data['cns']),
-        ];
-
-        $addressData = [
-            'zip_code' => sanitize_number($data['zip_code']),
-            'street' => $data['street'],
-            'number' => $data['number'],
-            'complement' => $data['complement'],
-            'neighborhood' => $data['neighborhood'],
-            'city' => $data['city'],
-            'state_id' => $data['state_id'],
-        ];
-
-        $patientModel->transStart();
-        $patientModel->insert($patientData);
-        $addressData['patient_id'] = $patientModel->getInsertID();
-        $addressModel->insert($addressData);
-        $patientModel->transComplete();
-
-        if ($patientModel->transStatus() === false) {
-            unlink($data['image']);
-            return redirect()->route('patient.create')->withInput()->with('message', ['type' => 'error', 'text' => 'Erro ao cadastrar paciente']);
+        if (!$db->transComplete()) {
+            remove_image($data['image']);
+            return handle_response('error', 'Erro ao cadastrar paciente', 'patient.create');
         }
 
-        return redirect()->route('patient.index')->withInput()->with('message', ['type' => 'success', 'text' => 'Paciente cadastrado com sucesso']);
+        return handle_response('success', 'Paciente cadastrado com sucesso', 'patient.index');
     }
 
     public function edit(string $id): string
     {
-        helper('custom');
-
-        $patientModel = new PatientModel();
-        $patient = $patientModel->select('
+        $patient = $this->patientModel->select('
                 patients.id, patients.image, patients.name, patients.mother_name, patients.birth_date, patients.cpf, patients.cns,
                 addresses.zip_code, addresses.street, addresses.number, addresses.complement, addresses.neighborhood, addresses.city, addresses.state_id
             ')
@@ -111,109 +82,68 @@ class PatientController extends BaseController
             ->join('states', 'states.id = addresses.state_id')
             ->find($id);
 
-        if (!$patient) {
-            return redirect()->route('patient.index')->withInput()->with('message', ['type' => 'error', 'text' => 'Paciente não encontrado']);
-        }
-
-        $stateModel = new StateModel();
-        $states = $stateModel->findAll();
+        if (!$patient) return handle_response('error', 'Paciente não encontrado', 'patient.index');
 
         return view('patient/edit', [
             'patient' => $patient,
-            'states' => $states
+            'states' => $this->stateModel->findAll()
         ]);
     }
 
     public function update(string $id): RedirectResponse
     {
-        helper('custom');
-
         if (!$this->validate('patient_update')) {
             return redirect()->route('patient.edit', [$id])->withInput()->with('errors', $this->validator->getErrors());
         }
 
         $data = $this->validator->getValidated();
-        $image = $this->request->getFile('image');
 
-        $addressModel = new AddressModel();
-        $patientModel = new PatientModel();
-        $patient = $patientModel->select('patients.id, patients.image, addresses.id AS address_id')
+        $patient = $this->patientModel->select('patients.id, patients.image, addresses.id AS address_id')
             ->join('addresses', 'addresses.patient_id = patients.id')
             ->find($id);
 
-        if (!$patient) {
-            return redirect()->route('patient.index')->withInput()->with('message', ['type' => 'error', 'text' => 'Paciente não encontrado']);
-        }
+        if (!$patient) return handle_response('error', 'Paciente não encontrado', 'patient.index');
 
+        $image = $this->request->getFile('image');
         if ($image->isValid()) {
-            if (isset($patient->image)) {
-                unlink($patient->image);
-            }
-            if (!$image->move('assets/images/patients', $image->getRandomName())) {
-                return redirect()->route('patient.edit', [$id])->withInput()->with('message', ['type' => 'error', 'text' => 'Erro ao atualizar os dados do paciente']);
-            }
-            $data['image'] = $image->getTempName() . $image->getName();
+            $path = upload_image($image, 'assets/images/patients');
+            if (!$path) return handle_response('error', 'Erro ao atualizar os dados do paciente', 'patient.edit', [$id]);
+            if (isset($patient->image)) remove_image($patient->image);
+            $data['image'] = $path;
         }
 
-        $patientData = [
-            'image' => $data['image'] ?? null,
-            'name' => $data['name'],
-            'mother_name' => $data['mother_name'],
-            'birth_date' => $data['birth_date'],
-            'cpf' => sanitize_number($data['cpf']),
-            'cns' => sanitize_number($data['cns']),
-        ];
+        $db = Database::connect();
+        $db->transStart();
+        $this->patientModel->update($patient->id, $data);
+        $this->addressModel->update($patient->address_id, $data);
 
-        $addressData = [
-            'zip_code' => sanitize_number($data['zip_code']),
-            'street' => $data['street'],
-            'number' => $data['number'],
-            'complement' => $data['complement'],
-            'neighborhood' => $data['neighborhood'],
-            'city' => $data['city'],
-            'state_id' => $data['state_id'],
-        ];
-
-        $patientModel->transStart();
-        $patientModel->update($patient->id, $patientData);
-        $addressModel->update($patient->address_id, $addressData);
-        $patientModel->transComplete();
-
-        if ($patientModel->transStatus() === false) {
-            if (isset($data['image'])) {
-                unlink($data['image']);
-            }
-            return redirect()->route('patient.edit', [$id])->withInput()->with('message', ['type' => 'error', 'text' => 'Erro ao atualizar os dados do paciente']);
+        if (!$db->transComplete()) {
+            remove_image($data['image']);
+            return handle_response('error', 'Erro ao atualizar os dados do paciente', 'patient.edit', [$id]);
         }
 
-        return redirect()->route('patient.edit', [$id])->withInput()->with('message', ['type' => 'success', 'text' => 'Dados do paciente atualizado com sucesso']);
+        return handle_response('success', 'Dados do paciente atualizado com sucesso', 'patient.edit', [$id]);
     }
 
     public function destroy(string $id): RedirectResponse
     {
-        $patientModel = new PatientModel();
-        $patient = $patientModel->select('id')->find($id);
+        $patient = $this->patientModel->select('id')->find($id);
 
-        if (!$patient) {
-            return redirect()->route('patient.index')->withInput()->with('message', ['type' => 'error', 'text' => 'Paciente não encontrado']);
-        }
+        if (!$patient) return handle_response('error', 'Paciente não encontrado', 'patient.index');
 
-        $patientModel->delete($patient->id);
+        $this->patientModel->delete($patient->id);
 
-        return redirect()->route('patient.index')->withInput()->with('message', ['type' => 'success', 'text' => 'Paciente deletado com sucesso']);
+        return handle_response('success', 'Paciente deletado com sucesso', 'patient.index');
     }
 
     public function active(string $id): RedirectResponse
     {
-        $patientModel = new PatientModel();
-        $patient = $patientModel->select('id')->withDeleted()->find($id);
+        $patient = $this->patientModel->select('id')->withDeleted()->find($id);
 
-        if (!$patient) {
-            return redirect()->route('patient.index')->withInput()->with('message', ['type' => 'error', 'text' => 'Paciente não encontrado']);
-        }
+        if (!$patient) return handle_response('error', 'Paciente não encontrado', 'patient.index');
 
-        $patientModel->update($patient->id, ['deleted_at' => null]);
+        $this->patientModel->update($patient->id, ['deleted_at' => null]);
 
-        return redirect()->route('patient.index')->withInput()->with('message', ['type' => 'success', 'text' => 'Paciente ativado com sucesso']);
+        return handle_response('success', 'Paciente ativado com sucesso', 'patient.index');
     }
 }
