@@ -16,9 +16,14 @@
                         <input class="form-control" type="text" name="search" placeholder="Procurar Pacientes" value="<?= service('request')->getVar('search') ?? '' ?>">
                         <button class="btn btn-primary" type="submit">Procurar</button>
                     </div>
-                    <div class="form-check mt-1">
-                        <input class="form-check-input" type="checkbox" id="searchDeleted" name="searchDeleted" value="1" <?= service('request')->getVar('searchDeleted') ? 'checked' : '' ?>>
-                        <label class="form-check-label" for="searchDeleted">Paciente Deletados</label>
+                    <div class="d-flex mt-1">
+                        <span class="me-2">
+                            Somente:
+                        </span>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="search_deleted" name="search_deleted" value="1" <?= service('request')->getVar('search_deleted') ? 'checked' : '' ?>>
+                            <label class="form-check-label" for="search_deleted">Paciente Deletado</label>
+                        </div>
                     </div>
                 </form>
             </div>
@@ -55,13 +60,13 @@
                                             <ul class="dropdown-menu">
                                                 <li><a class="dropdown-item" href="<?= url_to('patient.edit', $patient->id) ?>">Visualizar/Atualizar</a></li>
 
-                                                <?php if (!service('request')->getVar('searchDeleted')) : ?>
+                                                <?php if (!$patient->deleted_at) : ?>
                                                     <li><button class="dropdown-item text-danger" onclick="openModalDelete('<?= url_to('patient.destroy', $patient->id) ?>')">Deletar</button></li>
                                                 <?php else : ?>
                                                     <form action="<?= url_to('patient.active', $patient->id) ?>" method="POST">
                                                         <?= csrf_field() ?>
                                                         <input type="hidden" name="_method" value="PATCH">
-                                                        <li><button type="submit" class="dropdown-item">Ativar</button></li>
+                                                        <li><button type="submit" class="dropdown-item text-success">Ativar</button></li>
                                                     </form>
                                                 <?php endif ?>
                                             </ul>
@@ -71,7 +76,7 @@
                             <?php endforeach ?>
                         </tbody>
                     </table>
-                    <?= $pager->links('default', 'pagination_custom') ?>
+                    <?= $pagination->links('default', 'pagination_custom') ?>
                 </div>
             </div>
         </div>
