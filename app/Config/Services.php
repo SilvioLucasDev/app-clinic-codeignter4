@@ -2,6 +2,7 @@
 
 namespace Config;
 
+use App\Actions\Patient\PatientDestroyAction;
 use App\Actions\Patient\PatientStoreAction;
 use App\Actions\Patient\PatientUpdateAction;
 use CodeIgniter\Config\BaseService;
@@ -48,5 +49,14 @@ class Services extends BaseService
         }
 
         return new PatientUpdateAction();
+    }
+
+    public static function patientDestroyAction(bool $getShared = true)
+    {
+        if ($getShared) {
+            return static::getSharedInstance('PatientDestroyAction');
+        }
+
+        return new PatientDestroyAction();
     }
 }
