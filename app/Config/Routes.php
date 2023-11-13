@@ -1,6 +1,7 @@
 <?php
 
 use App\Controllers\Api\AuthController as ApiAuthController;
+use App\Controllers\Api\PatientController as ApiPatientController;
 use App\Controllers\HomeController;
 use App\Controllers\PatientController;
 use CodeIgniter\Router\RouteCollection;
@@ -30,3 +31,12 @@ $routes->patch('/patient/(:num)/active', [PatientController::class, 'active'], [
 
 // Auth Routes
 $routes->post('/api/login', [ApiAuthController::class, 'login']);
+
+$routes->group('api', ['filter' => 'tokens'], static function ($routes) {
+    // Patient Routes
+    $routes->get('patient', [ApiPatientController::class, 'index']);
+    $routes->post('patient', [ApiPatientController::class, 'store']);
+    $routes->match(['put', 'patch'], 'patient/(:num)', [ApiPatientController::class, 'update']);
+    $routes->delete('patient/(:num)', [ApiPatientController::class, 'destroy']);
+    $routes->patch('patient/(:num)/active', [ApiPatientController::class, 'active']);
+});
