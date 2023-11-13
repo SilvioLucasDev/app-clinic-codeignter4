@@ -135,4 +135,16 @@ class Validation extends BaseConfig
             'label' => 'Estado', 'rules' => 'if_exist|numeric|is_valid_state_id'
         ],
     ];
+
+    public array $auth_login = [
+        'email' => [
+            'label' => 'Email', 'rules' => 'required|valid_email',
+        ],
+        'password' => [
+            'label' => 'Password', 'rules' => 'required',
+        ],
+        'device_name' => [
+            'label' => 'Device Name', 'rules' => 'required|string',
+        ],
+    ];
 }
