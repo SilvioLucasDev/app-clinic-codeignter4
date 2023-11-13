@@ -2299,7 +2299,9 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "codeigniter4/shield": 10
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
