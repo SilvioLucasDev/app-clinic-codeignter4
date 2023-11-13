@@ -10,7 +10,7 @@ class PatientModel extends Model
     protected $table            = 'patients';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
-    protected $returnType       = PatientEntity::class;
+    protected $returnType       = 'object';
     protected $useSoftDeletes   = true;
     protected $protectFields    = true;
     protected $allowedFields    = [

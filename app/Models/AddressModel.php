@@ -10,7 +10,7 @@ class AddressModel extends Model
     protected $table            = 'addresses';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
-    protected $returnType       = AddressEntity::class;
+    protected $returnType       = 'object';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
     protected $allowedFields    = [

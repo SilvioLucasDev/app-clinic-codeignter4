@@ -2,8 +2,8 @@
 
 use App\Controllers\Api\AuthController as ApiAuthController;
 use App\Controllers\Api\PatientController as ApiPatientController;
-use App\Controllers\HomeController;
-use App\Controllers\PatientController;
+use App\Controllers\Web\HomeController;
+use App\Controllers\Web\PatientController;
 use CodeIgniter\Router\RouteCollection;
 
 /**
