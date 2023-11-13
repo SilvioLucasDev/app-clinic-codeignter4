@@ -2,6 +2,7 @@
 
 namespace Config;
 
+use App\Actions\Patient\PatientActiveAction;
 use App\Actions\Patient\PatientDestroyAction;
 use App\Actions\Patient\PatientStoreAction;
 use App\Actions\Patient\PatientUpdateAction;
@@ -58,5 +59,14 @@ class Services extends BaseService
         }
 
         return new PatientDestroyAction();
+    }
+
+    public static function patientActiveAction(bool $getShared = true)
+    {
+        if ($getShared) {
+            return static::getSharedInstance('PatientActiveAction');
+        }
+
+        return new PatientActiveAction();
     }
 }
