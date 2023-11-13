@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Entities\PatientEntity;
 use CodeIgniter\Model;
 
 class PatientModel extends Model
@@ -9,7 +10,7 @@ class PatientModel extends Model
     protected $table            = 'patients';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
-    protected $returnType       = 'object';
+    protected $returnType       = PatientEntity::class;
     protected $useSoftDeletes   = true;
     protected $protectFields    = true;
     protected $allowedFields    = [
