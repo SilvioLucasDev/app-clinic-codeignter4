@@ -3,6 +3,7 @@
 namespace Config;
 
 use App\Actions\Patient\PatientStoreAction;
+use App\Actions\Patient\PatientUpdateAction;
 use CodeIgniter\Config\BaseService;
 
 /**
@@ -38,5 +39,14 @@ class Services extends BaseService
         }
 
         return new PatientStoreAction();
+    }
+
+    public static function patientUpdateAction(bool $getShared = true)
+    {
+        if ($getShared) {
+            return static::getSharedInstance('PatientUpdateAction');
+        }
+
+        return new PatientUpdateAction();
     }
 }
