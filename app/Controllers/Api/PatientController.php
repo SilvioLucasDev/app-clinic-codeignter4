@@ -3,6 +3,7 @@
 namespace App\Controllers\Api;
 
 use App\Controllers\BaseController;
+use App\Dtos\Patient\PatientStoreDTO;
 use App\Exceptions\OperationException;
 use App\Exceptions\PatientNotFoundException;
 use App\Exceptions\ValidationException;
@@ -10,6 +11,7 @@ use App\Models\AddressModel;
 use App\Models\PatientModel;
 use App\Models\StateModel;
 use CodeIgniter\HTTP\ResponseInterface;
+use Config\Services;
 use Exception;
 
 class PatientController extends BaseController
@@ -51,26 +53,14 @@ class PatientController extends BaseController
         try {
             if (!$this->validate('patient_store')) throw new ValidationException($this->validator->getErrors());
 
-            $data = $this->validator->getValidated();
-            $image = $this->request->getFile('image');
+            $data = (object) $this->validator->getValidated();
+            $data->image = $this->request->getFile('image');
+            if (!$data->image->isValid()) $data->image = null;
 
-            if ($image) {
-                $path = upload_image($image, 'assets/images/patients');
-                $data['image'] = $path;
-            }
+            $action = Services::patientStoreAction();
+            $action->execute(PatientStoreDTO::make($data));
 
-            $db = db_connect();
-            $db->transStart();
-            $this->patientModel->save($data);
-            $data['patient_id'] = $this->patientModel->getInsertID();
-            $this->addressModel->save($data);
-
-            if (!$db->transComplete()) {
-                if (isset($data['image'])) remove_image($data['image']);
-                throw new OperationException();
-            }
-
-            return $this->response->setStatusCode(204);
+            return $this->response->setStatusCode(201);
         } catch (Exception $e) {
             if ($e instanceof ValidationException)  return $this->response->setJSON(['data' => ['error' => $e->getData()]])->setStatusCode($e->getCode());
 
