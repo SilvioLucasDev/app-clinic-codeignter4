@@ -14,7 +14,7 @@
                     <?= csrf_field() ?>
                     <div class="input-group">
                         <input class="form-control" type="text" name="search" placeholder="Procurar Pacientes" value="<?= service('request')->getVar('search') ?? '' ?>">
-                        <button class="btn btn-primary" type="submit">Procurar</button>
+                        <button class="btn btn-danger" type="submit">Procurar</button>
                     </div>
                     <div class="d-flex mt-1">
                         <span class="me-2">
@@ -28,7 +28,7 @@
                 </form>
             </div>
             <div class="col-12 col-md-6 text-md-end mb-3 mb-md-0 d-grid d-md-block">
-                <a class="btn btn-primary" href="<?= url_to('patient.create') ?>">+ Cadastrar</a>
+                <a class="btn btn-danger" href="<?= url_to('patient.create') ?>">+ Cadastrar</a>
             </div>
         </div>
 
@@ -103,7 +103,7 @@
                 <form id="deletarPacienteForm" action="#" method="POST">
                     <?= csrf_field() ?>
                     <input type="hidden" name="_method" value="DELETE">
-                    <button type="submit" class="btn btn-primary">Sim, eu tenho.</button>
+                    <button type="submit" class="btn btn-danger">Sim, eu tenho.</button>
                 </form>
             </div>
         </div>

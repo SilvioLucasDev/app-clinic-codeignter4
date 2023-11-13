@@ -4,7 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= $this->renderSection('page_title') ?? env('APP_NAME', 'App Name') ?></title>
+    <title><?= $this->renderSection('page_title') ?> &#8211; <?= env('APP_NAME', 'App Name') ?></title>
+    <link rel="shortcut icon" href="<?= base_url('assets/images/site/fav.png') ?>" type="image/x-icon" />
+    <link rel="stylesheet" href="<?= base_url('assets/css/style.css') ?>">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <script src="https://kit.fontawesome.com/df04815b4a.js" crossorigin="anonymous"></script>
 </head>

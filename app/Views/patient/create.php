@@ -119,7 +119,7 @@
 
                         <div class="col-12 mt-4">
                             <a class="btn btn-secondary" href="<?= url_to('patient.index') ?>">Cancelar</a>
-                            <button type="submit" class="btn btn-primary">Cadastrar</button>
+                            <button type="submit" class="btn btn-danger">Cadastrar</button>
                         </div>
                     </div>
                 </form>

@@ -1,0 +1,25 @@
+.pagination .page-link {
+    color: #fff!important;
+    background-color: #dc3545!important;
+    border-color: #dc3545!important;
+}
+
+.pagination .page-link:hover {
+    background-color: #bb2d3b!important;
+    border-color: #b02a37!important;
+}
+
+.pagination .active .page-link,
+.pagination .active {
+    background-color: #bb2d3b!important;
+    border-color: #b02a37!important;
+}
+
+.page-link:focus {
+    box-shadow: 0 0 0 0.2rem rgba(225, 83, 97, 0.25)!important;
+}
+
+.dropdown-item:active {
+    background-color: #c38d92!important;
+    border-color: #c38d92!important;
+}
