@@ -32,6 +32,7 @@ class PatientStoreAction
 
         $this->patientEntity->fill((array) $dto);
         $this->patientModel->save($this->patientEntity);
+
         $dto->patientId = $this->patientModel->getInsertID();
         $this->addressEntity->fill((array) $dto);
         $this->addressModel->save($this->addressEntity);

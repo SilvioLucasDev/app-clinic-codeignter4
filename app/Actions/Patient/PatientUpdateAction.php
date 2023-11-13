@@ -3,6 +3,8 @@
 namespace App\Actions\Patient;
 
 use App\Dtos\Patient\PatientUpdateDTO;
+use App\Entities\AddressEntity;
+use App\Entities\PatientEntity;
 use App\Exceptions\OperationException;
 use App\Exceptions\PatientNotFoundException;
 use App\Models\AddressModel;
@@ -12,7 +14,9 @@ use Exception;
 class PatientUpdateAction
 {
     public function __construct(
+        protected PatientEntity $patientEntity = new PatientEntity(),
         protected PatientModel $patientModel = new PatientModel(),
+        protected AddressEntity $addressEntity = new AddressEntity(),
         protected AddressModel $addressModel = new AddressModel(),
     ) {
     }
@@ -31,31 +35,49 @@ class PatientUpdateAction
             $dto->image = $path;
         }
 
-        if (isset($dto->image)) $patientData['image'] = $dto->image;
-        if (isset($dto->name)) $patientData['name'] = $dto->name;
-        if (isset($dto->birthDate)) $patientData['birthDate'] = $dto->birthDate;
-        if (isset($dto->birthDate)) $patientData['birthDate'] = $dto->birthDate;
-        if (isset($dto->cpf)) $patientData['cpf'] = $dto->cpf;
-        if (isset($dto->cns)) $patientData['cns'] =  $dto->cns;
+        $patientData = [
+            'image' => $dto->image,
+            'name' => $dto->name,
+            'motherName' => $dto->motherName,
+            'birthDate' => $dto->birthDate,
+            'cpf' => $dto->cpf,
+            'cns' => $dto->cns,
+        ];
 
-        if (isset($dto->zipCode)) $addressData['zipCode'] = $dto->zipCode;
-        if (isset($dto->street)) $addressData['street'] = $dto->street;
-        if (isset($dto->number)) $addressData['number'] = $dto->number;
-        if (isset($dto->neighborhood)) $addressData['neighborhood'] = $dto->neighborhood;
-        if (isset($dto->city)) $addressData['city'] = $dto->city;
-        if (isset($dto->stateId)) $addressData['stateId'] = $dto->stateId;
+        $addressData = [
+            'zipCode' => $dto->zipCode,
+            'street' => $dto->street,
+            'number' => $dto->number,
+            'neighborhood' => $dto->neighborhood,
+            'city' => $dto->city,
+            'stateId' => $dto->stateId,
+        ];
+
+        $patientData = $this->removeIfNull($patientData);
+        $addressData = $this->removeIfNull($addressData);
 
         $db = db_connect();
         $db->transStart();
 
-        if (isset($patientData)) $this->patientModel->update($patient->id, $patientData);
-        if (isset($addressData)) $this->addressModel->update($patient->address_id, $addressData);
+        if (!empty($patientData)) {
+            $this->patientEntity->fill($patientData);
+            $this->patientModel->update($patient->id, $this->patientEntity);
+        }
+
+        if (!empty($addressData)) {
+            $this->addressEntity->fill($addressData);
+            $this->addressModel->update($patient->address_id, $this->addressEntity);
+        }
 
         if (!$db->transComplete()) {
             if (isset($dto->image)) remove_image($dto->image);
             throw new OperationException('Erro ao atualizar os dados do paciente');
         }
-
         return true;
+    }
+
+    private function removeIfNull(array $array): array
+    {
+        return array_filter($array, fn ($item) => $item !== null);
     }
 }

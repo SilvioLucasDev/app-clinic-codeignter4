@@ -7,7 +7,6 @@ use App\Dtos\Patient\PatientStoreDTO;
 use App\Dtos\Patient\PatientUpdateDTO;
 use App\Exceptions\PatientNotFoundException;
 use App\Exceptions\ValidationException;
-use App\Models\AddressModel;
 use App\Models\PatientModel;
 use App\Models\StateModel;
 use CodeIgniter\HTTP\RedirectResponse;
@@ -18,7 +17,6 @@ class PatientController extends BaseController
 {
     public function __construct(
         protected PatientModel $patientModel = new PatientModel(),
-        protected AddressModel $addressModel = new AddressModel(),
         protected StateModel $stateModel = new StateModel()
     ) {
     }
