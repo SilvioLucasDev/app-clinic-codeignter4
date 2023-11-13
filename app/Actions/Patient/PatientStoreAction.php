@@ -8,17 +8,15 @@ use App\Entities\PatientEntity;
 use App\Exceptions\OperationException;
 use App\Models\AddressModel;
 use App\Models\PatientModel;
-use App\Models\StateModel;
 use Exception;
 
 class PatientStoreAction
 {
     public function __construct(
-        protected PatientModel $patientModel = new PatientModel(),
         protected PatientEntity $patientEntity = new PatientEntity(),
-        protected AddressModel $addressModel = new AddressModel(),
+        protected PatientModel $patientModel = new PatientModel(),
         protected AddressEntity $addressEntity = new AddressEntity(),
-        protected StateModel $stateModel = new StateModel(),
+        protected AddressModel $addressModel = new AddressModel(),
     ) {
     }
 

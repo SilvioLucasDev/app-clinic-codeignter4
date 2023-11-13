@@ -3,23 +3,17 @@
 namespace App\Actions\Patient;
 
 use App\Dtos\Patient\PatientUpdateDTO;
-use App\Entities\AddressEntity;
-use App\Entities\PatientEntity;
 use App\Exceptions\OperationException;
 use App\Exceptions\PatientNotFoundException;
 use App\Models\AddressModel;
 use App\Models\PatientModel;
-use App\Models\StateModel;
 use Exception;
 
 class PatientUpdateAction
 {
     public function __construct(
         protected PatientModel $patientModel = new PatientModel(),
-        protected PatientEntity $patientEntity = new PatientEntity(),
         protected AddressModel $addressModel = new AddressModel(),
-        protected AddressEntity $addressEntity = new AddressEntity(),
-        protected StateModel $stateModel = new StateModel(),
     ) {
     }
 
@@ -53,6 +47,7 @@ class PatientUpdateAction
 
         $db = db_connect();
         $db->transStart();
+
         if (isset($patientData)) $this->patientModel->update($patient->id, $patientData);
         if (isset($addressData)) $this->addressModel->update($patient->address_id, $addressData);
 
