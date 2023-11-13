@@ -9,6 +9,7 @@ use CodeIgniter\Filters\DebugToolbar;
 use CodeIgniter\Filters\Honeypot;
 use CodeIgniter\Filters\InvalidChars;
 use CodeIgniter\Filters\SecureHeaders;
+use CodeIgniter\Shield\Filters\TokenAuth;
 
 class Filters extends BaseConfig
 {
@@ -27,6 +28,7 @@ class Filters extends BaseConfig
         'invalidchars'  => InvalidChars::class,
         'secureheaders' => SecureHeaders::class,
         'auth-rates'    => AuthRatesFilter::class,
+        'tokens'        => TokenAuth::class,
     ];
 
     /**
@@ -38,14 +40,19 @@ class Filters extends BaseConfig
      */
     public array $globals = [
         'before' => [
-            'csrf',
-            'session' => ['except' => ['login*', 'register']],
+            'csrf' => [
+                'except' => 'api/*'
+            ],
+            'session' => [
+                'except' => ['login*', 'register', 'api/*']
+            ],
             // 'honeypot',
-            // 'csrf',
             // 'invalidchars',
         ],
         'after' => [
-            'toolbar',
+            'toolbar' => [
+                'except' => 'api/*'
+            ],
             // 'honeypot',
             // 'secureheaders',
         ],
@@ -73,9 +80,7 @@ class Filters extends BaseConfig
      */
     public array $filters = [
         'auth-rates' => [
-            'before' => [
-                'login*', 'register',
-            ]
+            'before' => ['login*', 'register', 'api/login']
         ]
     ];
 }
