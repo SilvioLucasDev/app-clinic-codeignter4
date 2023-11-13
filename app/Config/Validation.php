@@ -51,7 +51,7 @@ class Validation extends BaseConfig
     // --------------------------------------------------------------------
     public array $patient_store = [
         'image' => [
-            'label' => 'Foto', 'rules' => 'is_image[image]|ext_in[image,png,jpg,jpeg]'
+            'label' => 'Foto', 'rules' => 'if_exist|is_image[image]|ext_in[image,png,jpg,jpeg]'
         ],
         'name' => [
             'label' => 'Nome', 'rules' => 'required|min_length[3]|max_length[100]'
@@ -78,7 +78,7 @@ class Validation extends BaseConfig
             'label' => 'Número', 'rules' => 'required|numeric|max_length[10]'
         ],
         'complement' => [
-            'label' => 'Complemento', 'rules' => 'max_length[100]'
+            'label' => 'Complemento', 'rules' => 'if_exist|max_length[100]'
         ],
         'neighborhood' => [
             'label' => 'Bairro', 'rules' => 'required|min_length[3]|max_length[100]'
