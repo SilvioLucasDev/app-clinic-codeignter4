@@ -99,11 +99,8 @@ class PatientController extends BaseController
     public function destroy(string $id): ResponseInterface
     {
         try {
-            $patient = $this->patientModel->select('id')->find($id);
-            if (!$patient) throw new PatientNotFoundException();
-
-            $deleted = $this->patientModel->delete($patient->id);
-            if (!$deleted) throw new OperationException();
+            $action = Services::patientDestroyAction();
+            $action->execute($id);
 
             return $this->response->setStatusCode(204);
         } catch (Exception $e) {

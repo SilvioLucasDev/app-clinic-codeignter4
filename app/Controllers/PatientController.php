@@ -134,11 +134,8 @@ class PatientController extends BaseController
     public function destroy(string $id): RedirectResponse
     {
         try {
-            $patient = $this->patientModel->select('id')->find($id);
-            if (!$patient) throw new PatientNotFoundException();
-
-            $deleted = $this->patientModel->delete($patient->id);
-            if (!$deleted) throw new OperationException('Erro ao deletar o paciente');
+            $action = Services::patientDestroyAction();
+            $action->execute($id);
 
             return redirect()->route('patient.index')->withInput()->with('message', ['type' => 'success', 'text' => 'Paciente deletado com sucesso']);
         } catch (Exception $e) {
