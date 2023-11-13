@@ -5,7 +5,6 @@ namespace App\Controllers;
 use App\Controllers\BaseController;
 use App\Dtos\Patient\PatientStoreDTO;
 use App\Dtos\Patient\PatientUpdateDTO;
-use App\Exceptions\OperationException;
 use App\Exceptions\PatientNotFoundException;
 use App\Exceptions\ValidationException;
 use App\Models\AddressModel;
@@ -146,11 +145,8 @@ class PatientController extends BaseController
     public function active(string $id): RedirectResponse
     {
         try {
-            $patient = $this->patientModel->select('id')->onlyDeleted()->find($id);
-            if (!$patient) throw new PatientNotFoundException();
-
-            $activated = $this->patientModel->update($patient->id, ['deleted_at' => null]);
-            if (!$activated) throw new OperationException('Erro ao ativar o paciente');
+            $action = Services::patientActiveAction();
+            $action->execute($id);
 
             return redirect()->route('patient.index')->withInput()->with('message', ['type' => 'success', 'text' => 'Paciente ativado com sucesso']);
         } catch (Exception $e) {

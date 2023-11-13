@@ -5,8 +5,6 @@ namespace App\Controllers\Api;
 use App\Controllers\BaseController;
 use App\Dtos\Patient\PatientStoreDTO;
 use App\Dtos\Patient\PatientUpdateDTO;
-use App\Exceptions\OperationException;
-use App\Exceptions\PatientNotFoundException;
 use App\Exceptions\ValidationException;
 use App\Models\AddressModel;
 use App\Models\PatientModel;
@@ -111,11 +109,8 @@ class PatientController extends BaseController
     public function active(string $id): ResponseInterface
     {
         try {
-            $patient = $this->patientModel->select('id')->onlyDeleted()->find($id);
-            if (!$patient) throw new PatientNotFoundException();
-
-            $activated = $this->patientModel->update($patient->id, ['deleted_at' => null]);
-            if (!$activated) throw new OperationException();
+            $action = Services::patientActiveAction();
+            $action->execute($id);
 
             return $this->response->setStatusCode(204);
         } catch (Exception $e) {
