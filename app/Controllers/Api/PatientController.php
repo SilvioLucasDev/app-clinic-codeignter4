@@ -4,6 +4,7 @@ namespace App\Controllers\Api;
 
 use App\Controllers\BaseController;
 use App\Dtos\Patient\PatientStoreDTO;
+use App\Dtos\Patient\PatientUpdateDTO;
 use App\Exceptions\OperationException;
 use App\Exceptions\PatientNotFoundException;
 use App\Exceptions\ValidationException;
@@ -55,7 +56,10 @@ class PatientController extends BaseController
 
             $data = (object) $this->validator->getValidated();
             $data->image = $this->request->getFile('image');
-            if (!$data->image->isValid()) $data->image = null;
+
+            if ($data->image) {
+                if (!$data->image->isValid()) $data->image = null;
+            }
 
             $action = Services::patientStoreAction();
             $action->execute(PatientStoreDTO::make($data));
@@ -73,47 +77,16 @@ class PatientController extends BaseController
         try {
             if (!$this->validate('patient_update')) throw new ValidationException($this->validator->getErrors());
 
-            $data = $this->validator->getValidated();
-            $image = $this->request->getFile('image');
-            unset($data['id']);
+            $data = (object) $this->validator->getValidated();
+            $data->id = $id;
+            $data->image = $this->request->getFile('image');
 
-            if (!$data && !$image) throw new ValidationException('Não há dados para atualizar', 422);
-
-            $patient = $this->patientModel->select('patients.id, patients.image, addresses.id AS address_id')
-                ->join('addresses', 'addresses.patient_id = patients.id')
-                ->find($id);
-
-            if (!$patient) throw new PatientNotFoundException();
-
-            if ($image) {
-                $path = upload_image($image, 'assets/images/patients');
-                if (isset($patient->image)) remove_image($patient->image);
-                $data['image'] = $path;
+            if ($data->image) {
+                if (!$data->image->isValid()) $data->image = null;
             }
 
-            if (isset($data['image'])) $data['patient']['image'] = $data['image'];
-            if (isset($data['name']))  $data['patient']['name'] = $data['name'];
-            if (isset($data['mother_name'])) $data['patient']['mother_name'] = $data['mother_name'];
-            if (isset($data['birth_date']))  $data['patient']['birth_date'] = $data['birth_date'];
-            if (isset($data['cpf'])) $data['patient']['cpf'] = $data['cpf'];
-            if (isset($data['cns'])) $data['patient']['cns'] =  $data['cns'];
-
-            if (isset($data['zip_code'])) $data['address']['zip_code'] = $data['zip_code'];
-            if (isset($data['street'])) $data['address']['street'] = $data['street'];
-            if (isset($data['number'])) $data['address']['number'] = $data['number'];
-            if (isset($data['neighborhood'])) $data['address']['neighborhood'] = $data['neighborhood'];
-            if (isset($data['city'])) $data['address']['city'] = $data['city'];
-            if (isset($data['state_id'])) $data['address']['state_id'] = $data['state_id'];
-
-            $db = db_connect();
-            $db->transStart();
-            if (isset($data['patient'])) $this->patientModel->update($patient->id, $data['patient']);
-            if (isset($data['address'])) $this->addressModel->update($patient->address_id, $data['address']);
-
-            if (!$db->transComplete()) {
-                if (isset($data['image'])) remove_image($data['image']);
-                throw new OperationException();
-            }
+            $action = Services::patientUpdateAction();
+            $action->execute(PatientUpdateDTO::make($data));
 
             return $this->response->setStatusCode(204);
         } catch (Exception $e) {
