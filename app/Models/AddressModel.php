@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Entities\AddressEntity;
 use CodeIgniter\Model;
 
 class AddressModel extends Model
@@ -9,7 +10,7 @@ class AddressModel extends Model
     protected $table            = 'addresses';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
-    protected $returnType       = 'object';
+    protected $returnType       = AddressEntity::class;
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
     protected $allowedFields    = [
