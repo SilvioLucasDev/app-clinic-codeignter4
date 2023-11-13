@@ -26,20 +26,15 @@ class PatientController extends BaseController
     public function index(): string
     {
         try {
-            if ($search = $this->request->getVar('search')) {
-                $this->patientModel->like('name', $search);
-                $this->patientModel->orLike('cpf', $search);
-                $this->patientModel->orLike('cns', $search);
-            }
+            $search = $this->request->getVar('search') ?? null;
+            $searchDeleted = $this->request->getVar('search_deleted') ?? null;
 
-            if ($this->request->getVar('search_deleted')) $this->patientModel->onlyDeleted();
-
-            $patients = $this->patientModel->select('id, name, cpf, cns, deleted_at')->orderBy('id')->paginate(10);
-            $pagination = $this->patientModel->pager;
+            $action = Services::patientIndexAction();
+            $list = $action->execute($search, $searchDeleted);
 
             return view('patient/index', [
-                'patients' => $patients,
-                'pagination' =>  $pagination,
+                'patients' => $list->patients,
+                'pagination' =>  $list->pagination,
             ]);
         } catch (Exception $e) {
             return view('errors/custom/exception');

@@ -6,40 +6,25 @@ use App\Controllers\BaseController;
 use App\Dtos\Patient\PatientStoreDTO;
 use App\Dtos\Patient\PatientUpdateDTO;
 use App\Exceptions\ValidationException;
-use App\Models\AddressModel;
-use App\Models\PatientModel;
-use App\Models\StateModel;
 use CodeIgniter\HTTP\ResponseInterface;
 use Config\Services;
 use Exception;
 
 class PatientController extends BaseController
 {
-    public function __construct(
-        protected PatientModel $patientModel = new PatientModel(),
-        protected AddressModel $addressModel = new AddressModel(),
-        protected StateModel $stateModel = new StateModel()
-    ) {
-    }
-
     public function index(): ResponseInterface
     {
         try {
-            if ($search = $this->request->getVar('search')) {
-                $this->patientModel->like('name', $search);
-                $this->patientModel->orLike('cpf', $search);
-                $this->patientModel->orLike('cns', $search);
-            }
+            $search = $this->request->getVar('search') ?? null;
+            $searchDeleted = $this->request->getVar('search_deleted') ?? null;
 
-            if ($this->request->getVar('search_deleted')) $this->patientModel->onlyDeleted();
-
-            $patients = $this->patientModel->select('id, name, cpf, cns')->orderBy('id')->paginate(10);
-            $pagination = $this->patientModel->pager->getDetails();
+            $action = Services::patientIndexAction();
+            $list = $action->execute($search, $searchDeleted);
 
             return $this->response->setJSON([
                 'data' => [
-                    'patients' => $patients,
-                    'pagination' => $pagination,
+                    'patients' => $list->patients,
+                    'pagination' =>  $list->pagination->getDetails(),
                 ]
             ])->setStatusCode(200);
         } catch (Exception $e) {
