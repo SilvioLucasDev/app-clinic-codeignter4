@@ -1,1 +1,0 @@
-__ci_last_regenerate|i:1699923293;csrf_test_name|s:32:"fcf9771226e94a54e60d571d456a475f";beforeLoginUrl|s:29:"http://localhost:8080/patient";__ci_vars|a:1:{s:14:"beforeLoginUrl";i:1699923538;}_ci_previous_url|s:36:"http://localhost:8080/patient/1/edit";user|a:1:{s:2:"id";i:1;}
