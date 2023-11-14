@@ -28,7 +28,7 @@ class PatientController extends BaseController
                 ]
             ])->setStatusCode(200);
         } catch (Exception $e) {
-            return $this->response->setJSON(['data' => ['error' => 'Operation erro']])->setStatusCode(500);
+            return $this->response->setJSON(['data' => ['error' => 'Erro na operação']])->setStatusCode(500);
         }
     }
 
