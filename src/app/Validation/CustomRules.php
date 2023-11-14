@@ -3,9 +3,35 @@
 namespace App\Validation;
 
 use Config\Database;
+use CodeIgniter\HTTP\CLIRequest;
+use CodeIgniter\HTTP\IncomingRequest;
+use CodeIgniter\HTTP\RequestInterface;
+use Config\Services;
 
 class CustomRules
 {
+
+    /**
+     * Request instance. So we can get access to the files.
+     *
+     * @var IncomingRequest
+     */
+    protected $request;
+
+    /**
+     * Constructor.
+     */
+    public function __construct(?RequestInterface $request = null)
+    {
+        if ($request === null) {
+            $request = Services::request();
+        }
+
+        assert($request instanceof IncomingRequest || $request instanceof CLIRequest);
+
+        $this->request = $request;
+    }
+
     /**
      * Sanitize field and checks the database to see if the given value is unique. Can
      * ignore a single record by field/value to make it useful during
@@ -25,9 +51,9 @@ class CustomRules
 
         $str = sanitize_number($str);
 
-        [$field, $ignoreField, $ignoreValue] = array_pad(
+        [$field, $ignoreField] = array_pad(
             explode(',', $field),
-            3,
+            2,
             null
         );
 
@@ -39,11 +65,12 @@ class CustomRules
             ->where($field, $str)
             ->limit(1);
 
-        if (
-            !empty($ignoreField) && !empty($ignoreValue)
-            && !preg_match('/^\{(\w+)\}$/', $ignoreValue)
-        ) {
-            $row = $row->where("{$ignoreField} !=", $ignoreValue);
+        if (!empty($ignoreField)) {
+            $ignoreValue = $this->request->getUri()->getSegment(2);
+
+            if (!preg_match('/^\{(\w+)\}$/', $ignoreValue)) {
+                $row = $row->where("{$ignoreField} !=", $ignoreValue);
+            }
         }
 
         $field = strtoupper($field);

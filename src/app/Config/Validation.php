@@ -92,11 +92,8 @@ class Validation extends BaseConfig
     ];
 
     public array $patient_update = [
-        'id' => [
-            'rules' => 'required_with[cpf,cns]'
-        ],
         'image' => [
-            'label' => 'Foto', 'rules' => 'if_exist|is_image[image]|ext_in[image,png,jpg,gif]'
+            'label' => 'Foto', 'rules' => 'if_exist|is_image[image]|ext_in[image,png,jpg,jpeg]'
         ],
         'name' => [
             'label' => 'Nome', 'rules' => 'if_exist|min_length[3]|max_length[100]'
@@ -108,10 +105,10 @@ class Validation extends BaseConfig
             'label' => 'Dt. Nascimento', 'rules' => 'if_exist|valid_date[Y-m-d]'
         ],
         'cpf' => [
-            'label' => 'CPF', 'rules' => 'if_exist|min_length[11]|max_length[14]|cpf_is_valid|is_unique_custom[patients.cpf,id,{id}]'
+            'label' => 'CPF', 'rules' => 'if_exist|min_length[11]|max_length[14]|cpf_is_valid|is_unique_custom[patients.cpf,id]'
         ],
         'cns'  => [
-            'label' => 'CNS', 'rules' => 'if_exist|min_length[15]|max_length[18]|cns_is_valid|is_unique_custom[patients.cns,id,{id}]'
+            'label' => 'CNS', 'rules' => 'if_exist|min_length[15]|max_length[18]|cns_is_valid|is_unique_custom[patients.cns,id]'
         ],
         'zip_code' => [
             'label' => 'CEP', 'rules' => 'if_exist|min_length[8]|max_length[9]'

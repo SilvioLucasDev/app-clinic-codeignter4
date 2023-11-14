@@ -19,7 +19,6 @@
                 <form action="<?= url_to('patient.update', $patient->id) ?>" method="post" enctype="multipart/form-data">
                     <?= csrf_field() ?>
                     <input type="hidden" name="_method" value="PATCH">
-                    <input type="hidden" name="id" value="<?= $patient->id ?>">
 
                     <div class="row g-1">
                         <div class="col-md-6">
