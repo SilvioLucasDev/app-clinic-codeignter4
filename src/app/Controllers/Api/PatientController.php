@@ -15,8 +15,10 @@ class PatientController extends BaseController
     public function index(): ResponseInterface
     {
         try {
-            $search = $this->request->getVar('search') ?? null;
-            $searchDeleted = $this->request->getVar('search_deleted') ?? null;
+            $queryParams = $this->request->getUri()->getQuery();
+            parse_str($queryParams, $params);
+            $search = $params['search'] ?? null;
+            $searchDeleted = $params['search_deleted'] ?? null;
 
             $action = Services::patientIndexAction();
             $list = $action->execute($search, $searchDeleted);
