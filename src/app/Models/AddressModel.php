@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Entities\AddressEntity;
 use CodeIgniter\Model;
 
 class AddressModel extends Model

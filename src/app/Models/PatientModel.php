@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Entities\PatientEntity;
 use CodeIgniter\Model;
 
 class PatientModel extends Model
