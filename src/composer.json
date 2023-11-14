@@ -35,7 +35,8 @@
         "sort-packages": true
     },
     "scripts": {
-        "test": "phpunit"
+        "test": "phpunit",
+        "test-debug": "vendor/bin/phpunit --debug"
     },
     "minimum-stability": "dev",
     "prefer-stable": true
