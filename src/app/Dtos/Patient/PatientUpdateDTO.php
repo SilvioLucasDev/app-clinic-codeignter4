@@ -17,6 +17,7 @@ class PatientUpdateDTO
         public string|null $zipCode,
         public string|null $street,
         public int|null $number,
+        public string|null $complement,
         public string|null $neighborhood,
         public string|null $city,
         public int|null $stateId,
@@ -24,22 +25,23 @@ class PatientUpdateDTO
     ) {
     }
 
-    public static function make(object $request): self
+    public static function make(array $request): self
     {
         return new self(
-            $request->id ?? null,
-            $request->image ?? null,
-            $request->name ?? null,
-            $request->mother_name ?? null,
-            $request->birth_date ?? null,
-            $request->cpf ?? null,
-            $request->cns ?? null,
-            $request->zip_code ?? null,
-            $request->street ?? null,
-            $request->number ?? null,
-            $request->neighborhood ?? null,
-            $request->city ?? null,
-            $request->state_id ?? null,
+            $request['id'] ?? null,
+            $request['image'] ?? null,
+            $request['name'] ?? null,
+            $request['mother_name'] ?? null,
+            $request['birth_date'] ?? null,
+            $request['cpf'] ?? null,
+            $request['cns'] ?? null,
+            $request['zip_code'] ?? null,
+            $request['street'] ?? null,
+            $request['number'] ?? null,
+            $request['complement'] ?? null,
+            $request['neighborhood'] ?? null,
+            $request['city'] ?? null,
+            $request['state_id'] ?? null,
         );
     }
 }

@@ -39,7 +39,7 @@ if (!function_exists('remove_image')) {
     function remove_image(string $imagePath): void
     {
         if (file_exists($imagePath)) {
-            remove_image($imagePath);
+            unlink($imagePath);
         }
     }
 }

@@ -59,11 +59,11 @@ class PatientController extends BaseController
         try {
             if (!$this->validate('patient_store')) throw new ValidationException($this->validator->getErrors());
 
-            $data = (object) $this->validator->getValidated();
-            $data->image = $this->request->getFile('image');
+            $data = $this->validator->getValidated();
+            $data['image'] = $this->request->getFile('image');
 
-            if ($data->image) {
-                if (!$data->image->isValid()) $data->image = null;
+            if ($data['image']) {
+                if (!$data['image']->isValid()) $data['image'] = null;
             }
 
             $action = Services::patientStoreAction();
@@ -106,12 +106,12 @@ class PatientController extends BaseController
         try {
             if (!$this->validate('patient_update')) throw new ValidationException($this->validator->getErrors());
 
-            $data = (object) $this->validator->getValidated();
-            $data->id = $id;
-            $data->image = $this->request->getFile('image');
+            $data = $this->validator->getValidated();
+            $data['id'] = $id;
+            $data['image'] = $this->request->getFile('image');
 
-            if ($data->image) {
-                if (!$data->image->isValid()) $data->image = null;
+            if ($data['image']) {
+                if (!$data['image']->isValid()) $data['image'] = null;
             }
 
             $action = Services::patientUpdateAction();

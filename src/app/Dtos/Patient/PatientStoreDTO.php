@@ -16,6 +16,7 @@ class PatientStoreDTO
         public string $zipCode,
         public string $street,
         public int|null $number,
+        public string|null $complement,
         public string $neighborhood,
         public string $city,
         public int $stateId,
@@ -24,21 +25,22 @@ class PatientStoreDTO
     ) {
     }
 
-    public static function make(object $request): self
+    public static function make(array $request): self
     {
         return new self(
-            $request->image,
-            $request->name,
-            $request->mother_name,
-            $request->birth_date,
-            $request->cpf,
-            $request->cns,
-            $request->zip_code,
-            $request->street,
-            $request->number ?? null,
-            $request->neighborhood,
-            $request->city,
-            $request->state_id,
+            $request['image'],
+            $request['name'],
+            $request['mother_name'],
+            $request['birth_date'],
+            $request['cpf'],
+            $request['cns'],
+            $request['zip_code'],
+            $request['street'],
+            $request['number'],
+            $request['complement'] ?? null,
+            $request['neighborhood'],
+            $request['city'],
+            $request['state_id'],
         );
     }
 }
