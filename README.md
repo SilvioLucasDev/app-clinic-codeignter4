@@ -1,67 +1,177 @@
-# CodeIgniter 4 Application Starter
+# Desafio | CodeIgniter
 
-## What is CodeIgniter?
+> ## Observações
 
-CodeIgniter is a PHP full-stack web framework that is light, fast, flexible and secure.
-More information can be found at the [official site](https://codeigniter.com).
+Busquei aplicar todos os requisitos e diferenças. No entanto, os testes da aplicação não foram finalizados.
+<br> Utilizei o Shield para a criação de todo o sistema de autenticação (Views e Tabelas).
+<br> Para segurança, busquei utilizar tudo o que o framework oferece, validando toda a parte web com sessão e csrf e a parte de api com tokens e configurei rate limit para rotas de autenticação.
 
-This repository holds a composer-installable app starter.
-It has been built from the
-[development repository](https://github.com/codeigniter4/CodeIgniter4).
+> ## Executando a Aplicação
 
-More information about the plans for version 4 can be found in [CodeIgniter 4](https://forum.codeigniter.com/forumdisplay.php?fid=28) on the forums.
+**Env:** Renomeie o arquivo `env` localizado na pasta `src` para `.env` e configure-o de acordo ou copie e cole as informações a seguir.
 
-The user guide corresponding to the latest version of the framework can be found
-[here](https://codeigniter4.github.io/userguide/).
+```env
+CI_ENVIRONMENT = development
+APP_NAME = 'OM30'
+app.baseURL = 'http://localhost:8080'
 
-## Installation & updates
+database.default.hostname = postgres
+database.default.database = ci4
+database.default.username = postgres
+database.default.password = root
+database.default.DBDriver = Postgre
+database.default.DBPrefix =
+database.default.port = 5432
 
-`composer create-project codeigniter4/appstarter` then `composer update` whenever
-there is a new release of the framework.
+database.tests.hostname = postgres
+database.tests.database = ci4_test
+database.tests.username = postgres
+database.tests.password = root
+database.tests.DBDriver = Postgre
+database.tests.DBPrefix =
+database.tests.port = 5432
+```
 
-When updating, check the release notes to see if there are any changes you might need to apply
-to your `app` folder. The affected files can be copied or merged from
-`vendor/codeigniter4/framework/app`.
+### Executando com Docker
 
-## Setup
+Certifique-se de ter o Docker instalado em sua máquina.
 
-Copy `env` to `.env` and tailor for your app, specifically the baseURL
-and any database settings.
+**1 - Iniciar Docker:** Acesse a pasta `src` com o comando `cd src`, e execute o comando `docker compose up`.
+<br> **2 - Acessar Container:** Execute o comando `docker exec -it ci4-server //bin//sh` no Linux ou `docker exec -it ci4-server /bin/sh` no Windows.
+<br> **3 - Instalação de Dependências:** Dentro do container execute o comando `composer up` para instalar todas as dependências necessárias.
+<br> **4 - Rodar Migrations:** Dentro do container execute o comando `php spark migrate --all`.
+<br> **5 - Rodar Seeders:** Após rodar as migrations execute o comando `php spark db:seed DatabaseSeeder`.
 
-## Important Change with index.php
+### Executando sem Docker
 
-`index.php` is no longer in the root of the project! It has been moved inside the *public* folder,
-for better security and separation of components.
+Certifique-se de ter o PostgreSQL instalado em sua máquina.
 
-This means that you should configure your web server to "point" to your project's *public* folder, and
-not to the project root. A better practice would be to configure a virtual host to point there. A poor practice would be to point your web server to the project root and expect to enter *public/...*, as the rest of your logic and the
-framework are exposed.
+**1 - Instalação de Dependências:** Acesse a pasta `src` com `cd src`, e execute o comando `composer up` para instalar todas as dependências necessárias.
+<br> **2 - Rodar Migrations:** Dentro da pasta `src` execute o comando `php spark migrate --all`.
+<br> **3 - Rodar Seeders:** Após rodar as migrations, dentro da pasta `src` execute o comando `php spark db:seed DatabaseSeeder`.
+<br> **4 - Iniciando o Servidor:** Execute `php spark serve` para iniciar o servidor na porta especificada no .env e todos os serviços da aplicação.
 
-**Please** read the user guide for a better explanation of how CI4 works!
+### Após inciar a aplicação se você seguiu o passo a passo poderá executar essas ações:
 
-## Repository Management
+**Testes:** Para rodar os testes execute `composer run test`.
+<br> **Interface:** Acesse o sistema em `http://localhost:8080/login` e crie um login.
+<br> **Api:** Segue abaixo os endpoints para a utilização da API.
 
-We use GitHub issues, in our main repository, to track **BUGS** and to track approved **DEVELOPMENT** work packages.
-We use our [forum](http://forum.codeigniter.com) to provide SUPPORT and to discuss
-FEATURE REQUESTS.
+## Rotas
 
-This repository is a "distribution" one, built by our release preparation script.
-Problems with it can be raised on our forum, or as issues in the main repository.
+### Login
 
-## Server Requirements
+Rota para se autenticar e gerar o access token.
 
-PHP version 7.4 or higher is required, with the following extensions installed:
+-   **Método:** POST
+-   **URL:** `http://localhost:8080/api/login`
+-   **Headers:**
+    -   `Content-Type` application/json
+-   **Corpo da Requisição:**
+    ```json
+    {
+        "email": "String (Obrigatório)",
+        "password": "String (Obrigatório)",
+        "device_name": "String (Obrigatório)"
+    }
+    ```
 
-- [intl](http://php.net/manual/en/intl.requirements.php)
-- [mbstring](http://php.net/manual/en/mbstring.installation.php)
+### Listar Pacientes
 
-> **Warning**
-> The end of life date for PHP 7.4 was November 28, 2022. If you are
-> still using PHP 7.4, you should upgrade immediately. The end of life date
-> for PHP 8.0 will be November 26, 2023.
+Rota para listar pacientes com e sem filtro.
 
-Additionally, make sure that the following extensions are enabled in your PHP:
+-   **Método:** GET
+-   **URL:** `http://localhost:8080/api/patient`
+-   **Headers:**
+    -   `Content-Type` application/json
+    -   `Authorization` Bearer Token
+-   **Parâmetros de Consulta:**
+    -   `search_deleted`: Boolean
+    -   `page`: Number
+    -   `search`: String
 
-- json (enabled by default - don't turn it off)
-- [mysqlnd](http://php.net/manual/en/mysqlnd.install.php) if you plan to use MySQL
-- [libcurl](http://php.net/manual/en/curl.requirements.php) if you plan to use the HTTP\CURLRequest library
+### Listar um Único Paciente
+
+Rota para listar um único paciente.
+
+-   **Método:** GET
+-   **URL:** `http://localhost:8080/api/patient/{id: Number}`
+-   **Headers:**
+    -   `Content-Type` application/json
+    -   `Authorization` Bearer Token
+
+### Criar um Paciente
+
+Rota para criar um novo paciente.
+
+-   **Método:** POST
+-   **URL:** `http://localhost:8080/api/patient`
+-   **Headers:**
+    -   `Content-Type` multipart/form-data
+    -   `Authorization` Bearer Token
+-   **Corpo da Requisição:**
+
+    ```json
+    {
+        "image": "Imagem (Opcional)",
+        "name": "String (Obrigatório)",
+        "mother_name": "String (Obrigatório)",
+        "birth_date": "String (YYYY-mm-dd) (Obrigatório)",
+        "cpf": "String (Obrigatório)",
+        "cns": "String (Obrigatório)",
+        "zip_code": "String (Obrigatório)",
+        "street": "String (Obrigatório)",
+        "number": "String (Opcional)",
+        "neighborhood": "String (Obrigatório)",
+        "city": "String (Obrigatório)",
+        "state_id": "Boolean (Obrigatório)"
+    }
+    ```
+
+### Atualizar um Paciente
+
+Rota para atualizar um paciente.
+
+-   **Método:** PATCH ou PUT
+-   **URL:** `http://localhost:8080/api/patient/{id: Number}`
+-   **Headers:**
+    -   `Content-Type` multipart/form-data
+    -   `Authorization` Bearer Token
+-   **Corpo da Requisição:**
+
+    ```json
+    {
+        "image": "Imagem (Opcional)",
+        "name": "String (Opcional)",
+        "mother_name": "String (Opcional)",
+        "birth_date": "String (YYYY-mm-dd) (Opcional)",
+        "cpf": "String (Opcional)",
+        "cns": "String (Opcional)",
+        "zip_code": "String (Opcional)",
+        "street": "String (Opcional)",
+        "number": "String (Opcional)",
+        "neighborhood": "String (Opcional)",
+        "city": "String (Opcional)",
+        "state_id": "Boolean (Opcional)"
+    }
+    ```
+
+### Deletar um Paciente
+
+Rota para deletar um paciente.
+
+-   **Método:** DELETE
+-   **URL:** `http://localhost:8080/api/patient/{id: Number}`
+-   **Headers:**
+    -   `Content-Type` application/json
+    -   `Authorization` Bearer Token
+
+### Ativar um Paciente
+
+Rota para ativar um paciente.
+
+-   **Método:** PATCH
+-   **URL:** `http://localhost:8080/api/patient/{id: Number}/active`
+-   **Headers:**
+    -   `Content-Type` application/json
+    -   `Authorization` Bearer Token
