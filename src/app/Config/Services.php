@@ -5,6 +5,7 @@ namespace Config;
 use App\Actions\Patient\PatientActiveAction;
 use App\Actions\Patient\PatientDestroyAction;
 use App\Actions\Patient\PatientIndexAction;
+use App\Actions\Patient\PatientShowAction;
 use App\Actions\Patient\PatientStoreAction;
 use App\Actions\Patient\PatientUpdateAction;
 use CodeIgniter\Config\BaseService;
@@ -50,6 +51,15 @@ class Services extends BaseService
         }
 
         return new PatientStoreAction();
+    }
+
+    public static function patientShowAction(bool $getShared = true)
+    {
+        if ($getShared) {
+            return static::getSharedInstance('PatientShowAction');
+        }
+
+        return new PatientShowAction();
     }
 
     public static function patientUpdateAction(bool $getShared = true)
