@@ -57,6 +57,22 @@ class PatientController extends BaseController
         }
     }
 
+    public function show(string $id)
+    {
+        try {
+            $action = Services::patientShowAction();
+            $patient = $action->execute($id);
+
+            return $this->response->setJSON([
+                'data' => [
+                    'patient' => $patient
+                ]
+            ])->setStatusCode(200);
+        } catch (Exception $e) {
+            return $this->response->setJSON(['data' => ['error' => $e->getMessage()]])->setStatusCode($e->getCode());
+        }
+    }
+
     public function update(string $id): ResponseInterface
     {
         try {

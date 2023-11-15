@@ -36,6 +36,7 @@ $routes->group('api', ['filter' => 'tokens'], static function ($routes) {
     // Patient Routes
     $routes->get('patient', [ApiPatientController::class, 'index']);
     $routes->post('patient', [ApiPatientController::class, 'store']);
+    $routes->get('patient/(:num)', [ApiPatientController::class, 'show']);
     $routes->match(['put', 'patch'], 'patient/(:num)', [ApiPatientController::class, 'update']);
     $routes->delete('patient/(:num)', [ApiPatientController::class, 'destroy']);
     $routes->patch('patient/(:num)/active', [ApiPatientController::class, 'active']);
