@@ -147,20 +147,20 @@ class Validation extends BaseConfig
 
     public array $auth_register = [
         'username' => [
-            'label' => 'username', 'rules' => 'required|max_length[30]|min_length[3]|regex_match[/\A[a-zA-Z0-9\.]+\z/]|is_unique[users.username]',
+            'label' => 'Username', 'rules' => 'required|max_length[30]|min_length[3]|regex_match[/\A[a-zA-Z0-9\.]+\z/]|is_unique[users.username]',
         ],
         'email' => [
-            'label' => 'email', 'rules' => 'required|max_length[254]|valid_email|is_unique[auth_identities.secret]',
+            'label' => 'Email', 'rules' => 'required|max_length[254]|valid_email|is_unique[auth_identities.secret]',
         ],
         'password' => [
-            'label' => 'password',
+            'label' => 'Password',
             'rules' => 'required|max_byte[72]|strong_password[]',
             'errors' => [
                 'max_byte' => 'Auth.errorPasswordTooLongBytes'
             ]
         ],
         'password_confirm' => [
-            'label' => 'password confirm', 'rules' => 'required|matches[password]'
+            'label' => 'Password confirm', 'rules' => 'required|matches[password]'
         ]
     ];
 }

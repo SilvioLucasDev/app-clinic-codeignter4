@@ -36,7 +36,6 @@ class RegisterController extends ShieldRegister
 
             return $this->response->setJSON(['data' => ['user_id' => $user->id]])->setStatusCode(201);
         } catch (Exception $e) {
-            exit;
             if ($e instanceof ValidationException)  return $this->response->setJSON(['data' => ['error' => $e->getData()]])->setStatusCode($e->getCode());
 
             return $this->response->setJSON(['data' => ['error' => $e->getMessage()]])->setStatusCode($e->getCode());
