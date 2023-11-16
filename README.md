@@ -8,14 +8,16 @@ Busquei aplicar todos os requisitos e diferenças. No entanto, os testes da apli
 
 > ## Executando a Aplicação
 
-**Env:** Renomeie o arquivo `env` localizado na pasta `src` para `.env` e configure-o de acordo ou copie e cole as informações a seguir.
+**Env:** Renomeie o arquivo `env` localizado na pasta `src` para `.env` e configure-o ou copie e cole as informações a seguir.
+
+Na variável hostname`{ALTERE AQUI}`, se você estiver utilizando o Docker, altere para "postgres"; caso contrário, deixe como "localhost".
 
 ```env
 CI_ENVIRONMENT = development
 APP_NAME = 'OM30'
 app.baseURL = 'http://localhost:8080'
 
-database.default.hostname = postgres
+database.default.hostname = {ALTERE AQUI}
 database.default.database = ci4
 database.default.username = postgres
 database.default.password = root
@@ -23,7 +25,7 @@ database.default.DBDriver = Postgre
 database.default.DBPrefix =
 database.default.port = 5432
 
-database.tests.hostname = postgres
+database.tests.hostname = {ALTERE AQUI}
 database.tests.database = ci4_test
 database.tests.username = postgres
 database.tests.password = root
@@ -37,7 +39,7 @@ database.tests.port = 5432
 Certifique-se de ter o Docker instalado em sua máquina.
 
 **1 - Iniciar Docker:** Acesse a pasta `src` com o comando `cd src`, e execute o comando `docker compose up`.
-<br> **2 - Acessar Container:** Execute o comando `docker exec -it ci4-server //bin//sh` no Linux ou `docker exec -it ci4-server /bin/sh` no Windows.
+<br> **2 - Acessar Container:** Execute o comando `docker exec -it ci4-server //bin//sh`. Se caso não funcionar tente com `/bin/sh`.
 <br> **3 - Instalação de Dependências:** Dentro do container execute o comando `composer up` para instalar todas as dependências necessárias.
 <br> **4 - Rodar Migrations:** Dentro do container execute o comando `php spark migrate --all`.
 <br> **5 - Rodar Seeders:** Após rodar as migrations execute o comando `php spark db:seed DatabaseSeeder`.
@@ -47,6 +49,7 @@ Certifique-se de ter o Docker instalado em sua máquina.
 Certifique-se de ter o PostgreSQL instalado em sua máquina.
 
 **1 - Instalação de Dependências:** Acesse a pasta `src` com `cd src`, e execute o comando `composer up` para instalar todas as dependências necessárias.
+<br> **2 - Criando Banco de Dados:** Dentro da pasta `src` execute os comandos `php spark db:create ci4` e `php spark db:create ci4_test`. Se caso não funcionar crie os bancos `ci4` e `ci4_test` manualmente.
 <br> **2 - Rodar Migrations:** Dentro da pasta `src` execute o comando `php spark migrate --all`.
 <br> **3 - Rodar Seeders:** Após rodar as migrations, dentro da pasta `src` execute o comando `php spark db:seed DatabaseSeeder`.
 <br> **4 - Iniciando o Servidor:** Execute `php spark serve` para iniciar o servidor na porta especificada no .env e todos os serviços da aplicação.
@@ -54,10 +57,28 @@ Certifique-se de ter o PostgreSQL instalado em sua máquina.
 ### Após inciar a aplicação se você seguiu o passo a passo poderá executar essas ações:
 
 **Testes:** Para rodar os testes execute `composer run test`.
-<br> **Interface:** Acesse o sistema em `http://localhost:8080/login` e crie um login.
+<br> **Web:** Acesse o sistema em `http://localhost:8080/login` e crie um cadastro.
 <br> **Api:** Segue abaixo os endpoints para a utilização da API.
 
 ## Rotas
+
+### Cadastro
+
+Rota para se cadastrar no sistema.
+
+-   **Método:** POST
+-   **URL:** `http://localhost:8080/api/register`
+-   **Headers:**
+    -   `Content-Type` application/json
+-   **Corpo da Requisição:**
+    ```json
+    {
+        "username": "String (Obrigatório)",
+        "email": "String (Obrigatório)",
+        "password": "String (Obrigatório)",
+        "password_confirm": "String (Obrigatório)"
+    }
+    ```
 
 ### Login
 
@@ -87,12 +108,12 @@ Rota para listar pacientes com e sem filtro.
     -   `Authorization` Bearer Token
 -   **Parâmetros de Consulta:**
     -   `search_deleted`: Boolean
-    -   `page`: Number
     -   `search`: String
+    -   `page`: Number
 
-### Listar um Único Paciente
+### Exibir informações de um paciente
 
-Rota para listar um único paciente.
+Rota para exibir informações de um paciente.
 
 -   **Método:** GET
 -   **URL:** `http://localhost:8080/api/patient/{id: Number}`
@@ -100,9 +121,9 @@ Rota para listar um único paciente.
     -   `Content-Type` application/json
     -   `Authorization` Bearer Token
 
-### Criar um Paciente
+### Cadastrar um Paciente
 
-Rota para criar um novo paciente.
+Rota para Cadastrar um novo paciente.
 
 -   **Método:** POST
 -   **URL:** `http://localhost:8080/api/patient`
