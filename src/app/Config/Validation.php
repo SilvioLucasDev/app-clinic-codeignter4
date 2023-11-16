@@ -144,4 +144,23 @@ class Validation extends BaseConfig
             'label' => 'Device Name', 'rules' => 'required|string',
         ],
     ];
+
+    public array $auth_register = [
+        'username' => [
+            'label' => 'username', 'rules' => 'required|max_length[30]|min_length[3]|regex_match[/\A[a-zA-Z0-9\.]+\z/]|is_unique[users.username]',
+        ],
+        'email' => [
+            'label' => 'email', 'rules' => 'required|max_length[254]|valid_email|is_unique[auth_identities.secret]',
+        ],
+        'password' => [
+            'label' => 'password',
+            'rules' => 'required|max_byte[72]|strong_password[]',
+            'errors' => [
+                'max_byte' => 'Auth.errorPasswordTooLongBytes'
+            ]
+        ],
+        'password_confirm' => [
+            'label' => 'password confirm', 'rules' => 'required|matches[password]'
+        ]
+    ];
 }
