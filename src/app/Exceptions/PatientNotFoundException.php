@@ -7,7 +7,7 @@ use Exception;
 
 class PatientNotFoundException extends Exception implements ExceptionInterface
 {
-    public function __construct(?string $message = 'Paciente não encontrado', ?int $code = 422)
+    public function __construct(?string $message = 'Paciente não encontrado', ?int $code = 404)
     {
         parent::__construct($message, $code);
     }

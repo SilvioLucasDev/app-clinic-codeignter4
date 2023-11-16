@@ -47,9 +47,13 @@ class PatientController extends BaseController
             }
 
             $action = Services::patientStoreAction();
-            $action->execute(PatientStoreDTO::make($data));
+            $patientId = $action->execute(PatientStoreDTO::make($data));
 
-            return $this->response->setStatusCode(201);
+            return $this->response->setJSON([
+                'data' => [
+                    'patient_id' => $patientId,
+                ]
+            ])->setStatusCode(201);
         } catch (Exception $e) {
             if ($e instanceof ValidationException)  return $this->response->setJSON(['data' => ['error' => $e->getData()]])->setStatusCode($e->getCode());
 

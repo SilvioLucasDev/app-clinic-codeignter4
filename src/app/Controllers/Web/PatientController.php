@@ -5,7 +5,6 @@ namespace App\Controllers\Web;
 use App\Controllers\BaseController;
 use App\Dtos\Patient\PatientStoreDTO;
 use App\Dtos\Patient\PatientUpdateDTO;
-use App\Exceptions\PatientNotFoundException;
 use App\Exceptions\ValidationException;
 use App\Models\PatientModel;
 use App\Models\StateModel;

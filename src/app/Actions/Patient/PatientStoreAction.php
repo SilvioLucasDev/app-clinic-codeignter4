@@ -20,7 +20,7 @@ class PatientStoreAction
     ) {
     }
 
-    public function execute(PatientStoreDTO $dto): bool|Exception
+    public function execute(PatientStoreDTO $dto): int|Exception
     {
         if ($dto->image) {
             $path = upload_image($dto->image, 'assets/images/patients');
@@ -42,6 +42,6 @@ class PatientStoreAction
             throw new OperationException('Erro ao cadastrar paciente');
         }
 
-        return true;
+        return $dto->patientId;
     }
 }

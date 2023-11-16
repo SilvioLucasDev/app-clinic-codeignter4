@@ -73,7 +73,7 @@ class StoreTest extends CIUnitTestCase
         Mockery::close();
     }
 
-    public function testShouldReturn204IfSuccess(): void
+    public function testShouldReturn201IfSuccess(): void
     {
         //Act
         $response = $this->withRequest($this->requestConfig)
