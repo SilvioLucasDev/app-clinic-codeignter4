@@ -19,11 +19,11 @@ class StoreTest extends CIUnitTestCase
     use DatabaseTestTrait;
 
     protected $seed = DatabaseSeeder::class;
-    protected IncomingRequest $requestConfig;
-    protected string $baseUrl;
-    protected array $bodyData;
-    protected array $addressData;
-    protected array $patientData;
+    private IncomingRequest $requestConfig;
+    private string $baseUrl;
+    private array $bodyData;
+    private array $addressData;
+    private array $patientData;
 
     public function setUp(): void
     {

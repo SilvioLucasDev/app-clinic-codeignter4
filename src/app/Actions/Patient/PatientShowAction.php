@@ -8,7 +8,7 @@ use App\Models\PatientModel;
 class PatientShowAction
 {
     public function __construct(
-        protected PatientModel $patientModel = new PatientModel(),
+        private PatientModel $patientModel = new PatientModel(),
     ) {
     }
 

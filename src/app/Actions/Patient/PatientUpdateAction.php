@@ -14,10 +14,10 @@ use Exception;
 class PatientUpdateAction
 {
     public function __construct(
-        protected PatientEntity $patientEntity = new PatientEntity(),
-        protected PatientModel $patientModel = new PatientModel(),
-        protected AddressEntity $addressEntity = new AddressEntity(),
-        protected AddressModel $addressModel = new AddressModel(),
+        private PatientEntity $patientEntity = new PatientEntity(),
+        private PatientModel $patientModel = new PatientModel(),
+        private AddressEntity $addressEntity = new AddressEntity(),
+        private AddressModel $addressModel = new AddressModel(),
     ) {
     }
 

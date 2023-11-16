@@ -10,7 +10,7 @@ use Exception;
 class PatientDestroyAction
 {
     public function __construct(
-        protected PatientModel $patientModel = new PatientModel(),
+        private PatientModel $patientModel = new PatientModel(),
     ) {
     }
 

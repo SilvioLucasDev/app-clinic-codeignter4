@@ -18,7 +18,7 @@ class IndexTest extends CIUnitTestCase
     use DatabaseTestTrait;
 
     protected $seed = DatabaseSeeder::class;
-    protected string $baseUrl;
+    private string $baseUrl;
 
     public function setUp(): void
     {

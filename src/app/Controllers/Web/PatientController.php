@@ -15,8 +15,8 @@ use Exception;
 class PatientController extends BaseController
 {
     public function __construct(
-        protected PatientModel $patientModel = new PatientModel(),
-        protected StateModel $stateModel = new StateModel()
+        private PatientModel $patientModel = new PatientModel(),
+        private StateModel $stateModel = new StateModel()
     ) {
     }
 

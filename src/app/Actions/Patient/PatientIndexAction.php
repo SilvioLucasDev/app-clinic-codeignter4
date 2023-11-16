@@ -7,7 +7,7 @@ use App\Models\PatientModel;
 class PatientIndexAction
 {
     public function __construct(
-        protected PatientModel $patientModel = new PatientModel(),
+        private PatientModel $patientModel = new PatientModel(),
     ) {
     }
 
