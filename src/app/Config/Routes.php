@@ -1,6 +1,8 @@
 <?php
 
-use App\Controllers\Api\AuthController as ApiAuthController;
+
+use App\Controllers\Api\Auth\LoginController as ApiLoginController;
+use App\Controllers\Api\Auth\RegisterController as ApiRegisterController;
 use App\Controllers\Api\PatientController as ApiPatientController;
 use App\Controllers\Web\HomeController;
 use App\Controllers\Web\PatientController;
@@ -30,7 +32,8 @@ $routes->patch('/patient/(:num)/active', [PatientController::class, 'active'], [
  */
 
 // Auth Routes
-$routes->post('/api/login', [ApiAuthController::class, 'login']);
+$routes->post('/api/login', [ApiLoginController::class, 'login']);
+$routes->post('/api/register', [ApiRegisterController::class, 'register']);
 
 $routes->group('api', ['filter' => 'tokens'], static function ($routes) {
     // Patient Routes

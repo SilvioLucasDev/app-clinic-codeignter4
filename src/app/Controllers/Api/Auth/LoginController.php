@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Controllers\Api;
+namespace App\Controllers\Api\Auth;
 
-use App\Controllers\BaseController;
 use App\Exceptions\InvalidCredentialsException;
 use App\Exceptions\ValidationException;
 use CodeIgniter\HTTP\ResponseInterface;
+use CodeIgniter\Shield\Controllers\LoginController as ShieldLogin;
 use Exception;
 
-class AuthController extends BaseController
+class LoginController extends ShieldLogin
 {
     public function login(): ResponseInterface
     {
