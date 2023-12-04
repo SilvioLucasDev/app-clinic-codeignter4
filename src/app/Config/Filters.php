@@ -44,7 +44,7 @@ class Filters extends BaseConfig
                 'except' => 'api/*'
             ],
             'session' => [
-                'except' => ['login*', 'register', 'api/*']
+                'except' => ['login', 'register', 'api/*']
             ],
             // 'honeypot',
             // 'invalidchars',
@@ -80,7 +80,7 @@ class Filters extends BaseConfig
      */
     public array $filters = [
         'auth-rates' => [
-            'before' => ['login*', 'register', 'api/login']
+            'before' => ['login', 'register', 'api/login']
         ]
     ];
 }

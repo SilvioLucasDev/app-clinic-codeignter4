@@ -16,7 +16,7 @@ class AuthRatesFilter extends AuthRates
 
         $throttler = service('throttler');
 
-        if ($throttler->check(md5($request->getIPAddress()), 10, MINUTE, 10) === false) {
+        if ($throttler->check(md5($request->getIPAddress()), 10, MINUTE) === false) {
             return service('response')->setStatusCode(
                 429,
                 lang('Auth.throttled', [$throttler->getTokenTime()])
