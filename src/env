@@ -20,7 +20,7 @@
 # APP
 #--------------------------------------------------------------------
 
-# APP_NAME = 'OM30'
+# APP_NAME = 'HEALTH'
 
 # app.baseURL = ''
 # If you have trouble with `.`, you could also use `_`.
@@ -32,7 +32,9 @@
 # DATABASE
 #--------------------------------------------------------------------
 
-# database.default.hostname = localhost
+# No campo {ALTERE AQUI}, se você estiver utilizando o Docker, altere para "postgres"; caso contrário, deixe como "localhost".
+
+# database.default.hostname = {ALTERE AQUI}
 # database.default.database = ci4
 # database.default.username = root
 # database.default.password = root
@@ -40,7 +42,9 @@
 # database.default.DBPrefix =
 # database.default.port = 3306
 
-# database.tests.hostname = localhost
+# No campo {ALTERE AQUI}, se você estiver utilizando o Docker, altere para "postgres"; caso contrário, deixe como "localhost".
+
+# database.tests.hostname = {ALTERE AQUI}
 # database.tests.database = ci4_test
 # database.tests.username = root
 # database.tests.password = root

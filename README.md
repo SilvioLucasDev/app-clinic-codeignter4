@@ -2,7 +2,7 @@
 
 > ## Observações
 
-Busquei aplicar todos os requisitos e diferenças. No entanto, os testes da aplicação não foram finalizados.
+Busquei aplicar todos os requisitos e diferenciais. No entanto, os testes da aplicação não foram finalizados.
 <br> Utilizei o Shield para a criação de todo o sistema de autenticação (Views e Tabelas).
 <br> Para segurança, busquei utilizar tudo o que o framework oferece, validando toda a parte web com sessão e csrf e a parte de api com tokens e configurei rate limit para rotas de autenticação.
 
@@ -14,7 +14,7 @@ Na variável hostname`{ALTERE AQUI}`, se você estiver utilizando o Docker, alte
 
 ```env
 CI_ENVIRONMENT = development
-APP_NAME = 'OM30'
+APP_NAME = 'HEALTH'
 app.baseURL = 'http://localhost:8080'
 
 database.default.hostname = {ALTERE AQUI}
