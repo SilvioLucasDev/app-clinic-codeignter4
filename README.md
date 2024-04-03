@@ -1,10 +1,8 @@
-# Desafio | CodeIgniter
+# app-clinic-codeignter4
 
-> ## Observações
+Sistema em CodeIgniter4, que utiliza o Shield para autenticação via web (Session) e API (token). O sistema foi desenvolvido aproveitando ao máximo as funcionalidades oferecidas pelo framework para validação de rotas, desenvolvimento da interface e aplicação das regras de negócio.
 
-Busquei aplicar todos os requisitos e diferenciais. No entanto, os testes da aplicação não foram finalizados.
-<br> Utilizei o Shield para a criação de todo o sistema de autenticação (Views e Tabelas).
-<br> Para segurança, busquei utilizar tudo o que o framework oferece, validando toda a parte web com sessão e csrf e a parte de api com tokens e configurei rate limit para rotas de autenticação.
+Para ter uma ideia mais concreta do projeto, você pode assistir a um vídeo demonstrando seu funcionamento [aqui](https://youtu.be/YK3mHjFFgWU?si=DFLSfRzv8sg6JGNQ)
 
 > ## Executando a Aplicação
 
