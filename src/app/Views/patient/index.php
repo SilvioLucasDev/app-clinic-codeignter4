@@ -16,14 +16,9 @@
                         <input class="form-control" type="text" name="search" placeholder="Procurar Pacientes" value="<?= service('request')->getVar('search') ?? '' ?>">
                         <button class="btn btn-danger" type="submit">Procurar</button>
                     </div>
-                    <div class="d-flex mt-1">
-                        <span class="me-2">
-                            Somente:
-                        </span>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="search_deleted" name="search_deleted" value="1" <?= service('request')->getVar('search_deleted') ? 'checked' : '' ?>>
-                            <label class="form-check-label" for="search_deleted">Paciente Deletado</label>
-                        </div>
+                    <div class="form-check mt-1">
+                        <input class="form-check-input" type="checkbox" id="search_deleted" name="search_deleted" value="1" <?= service('request')->getVar('search_deleted') ? 'checked' : '' ?>>
+                        <label class="form-check-label" for="search_deleted">Deletados</label>
                     </div>
                 </form>
             </div>

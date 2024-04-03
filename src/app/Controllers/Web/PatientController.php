@@ -33,7 +33,7 @@ class PatientController extends BaseController
 
             return view('patient/index', [
                 'patients' => $list->patients,
-                'pagination' =>  $list->pagination,
+                'pagination' => $list->pagination,
             ]);
         } catch (Exception $e) {
             return view('errors/custom/exception');
