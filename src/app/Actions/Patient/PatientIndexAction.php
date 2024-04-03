@@ -13,15 +13,19 @@ class PatientIndexAction
 
     public function execute(?string $search, ?string $searchDeleted): object
     {
+        $this->patientModel->select('id, name, cpf, cns, deleted_at');
+
         if ($search) {
-            $this->patientModel->like('name', $search);
-            $this->patientModel->orLike('cpf', $search);
-            $this->patientModel->orLike('cns', $search);
+            $this->patientModel->groupStart();
+            $this->patientModel->like('name', $search, 'both', null, true);
+            $this->patientModel->orLike('cpf', preg_replace('/[\.\-\s]/', '', $search));
+            $this->patientModel->orLike('cns', preg_replace('/[\.\-\s]/', '', $search));
+            $this->patientModel->groupEnd();
         }
 
         if ($searchDeleted) $this->patientModel->onlyDeleted();
 
-        $patients = $this->patientModel->select('id, name, cpf, cns, deleted_at')->orderBy('id')->paginate(10);
+        $patients = $this->patientModel->orderBy('id')->paginate(10);
 
         return (object) [
             'patients' => $patients,
